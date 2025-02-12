@@ -21,7 +21,7 @@ namespace SoundScape.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("SoundScape.Models.Song", b =>
+            modelBuilder.Entity("Song", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -37,8 +37,12 @@ namespace SoundScape.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Duration")
-                        .HasColumnType("integer");
+                    b.Property<decimal>("Duration")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .IsRequired()

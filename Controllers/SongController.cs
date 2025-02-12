@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using SoundScape.Models;
 using SoundScape.Services;
 using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace SoundScape.Controllers
 {
@@ -11,11 +15,16 @@ namespace SoundScape.Controllers
     {
         private readonly ISongService _songService;
         private readonly ILogger<SongController> _logger;
+        private readonly string _uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
 
         public SongController(ISongService songService, ILogger<SongController> logger)
         {
             _songService = songService;
             _logger = logger;
+            if (!Directory.Exists(_uploadFolder))
+            {
+                Directory.CreateDirectory(_uploadFolder);
+            }
         }
 
         // GET: api/song
@@ -25,7 +34,7 @@ namespace SoundScape.Controllers
             try
             {
                 var songs = await _songService.GetAllSongsAsync();
-                return Ok(songs); // Повертаємо список пісень у форматі JSON
+                return Ok(songs);
             }
             catch (Exception ex)
             {
@@ -43,7 +52,7 @@ namespace SoundScape.Controllers
                 var song = await _songService.GetSongByIdAsync(id);
                 if (song == null)
                 {
-                    return NotFound(); // Якщо пісня не знайдена
+                    return NotFound();
                 }
                 return Ok(song);
             }
@@ -56,9 +65,11 @@ namespace SoundScape.Controllers
 
         // POST: api/song
         [HttpPost]
-        public async Task<IActionResult> CreateSong([FromBody] Song song)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> CreateSong([FromForm] SongUploadDto model)
+
         {
-            if (song == null)
+            if (model == null)
             {
                 _logger.LogWarning("Received null song data.");
                 return BadRequest("Song data cannot be null");
@@ -66,18 +77,40 @@ namespace SoundScape.Controllers
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState); // Повертаємо помилки валідації
+                return BadRequest(ModelState);
+            }
+
+            if (model.Mp3File == null || model.Mp3File.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            if (Path.GetExtension(model.Mp3File.FileName).ToLower() != ".mp3")
+            {
+                return BadRequest("Only MP3 files are allowed.");
             }
 
             try
             {
-                // Логування для перевірки
-                _logger.LogInformation($"Adding new song: {song.Title} by {song.Artist}");
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(model.Mp3File.FileName);
+                var filePath = Path.Combine(_uploadFolder, fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await model.Mp3File.CopyToAsync(stream);
+                }
 
-                // Додавання пісні через сервіс
+                var song = new Song
+                {
+                    Title = model.Title,
+                    Artist = model.Artist,
+                    Album = model.Album,
+                    Duration = (decimal)model.Duration,
+                    FilePath = "/Uploads/" + fileName
+                };
+
+                _logger.LogInformation($"Adding new song: {song.Title} by {song.Artist}");
                 await _songService.AddSongAsync(song);
 
-                // Повертаємо відповідь із статусом 201 (Created)
                 return CreatedAtAction(nameof(GetSongById), new { id = song.Id }, song);
             }
             catch (Exception ex)
@@ -93,7 +126,7 @@ namespace SoundScape.Controllers
         {
             if (id != song.Id)
             {
-                return BadRequest("ID в параметрах і моделі не співпадають.");
+                return BadRequest("ID in request does not match model ID.");
             }
 
             try
@@ -105,7 +138,7 @@ namespace SoundScape.Controllers
                 }
 
                 await _songService.UpdateSongAsync(song);
-                return NoContent(); // HTTP 204 (успішно, без контенту)
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -127,7 +160,7 @@ namespace SoundScape.Controllers
                 }
 
                 await _songService.DeleteSongAsync(id);
-                return NoContent(); // HTTP 204
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -135,5 +168,14 @@ namespace SoundScape.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+    }
+
+    public class SongUploadDto
+    {
+        public string Title { get; set; }
+        public string Artist { get; set; }
+        public string Album { get; set; }
+        public double Duration { get; set; }
+        public IFormFile Mp3File { get; set; }
     }
 }
