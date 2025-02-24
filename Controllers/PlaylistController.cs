@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SoundScape.Data;
+using SoundScape.DTOs;
 using SoundScape.Models;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SoundScape.Controllers
 {
     [ApiController]
-    [Route("api/playlists")] // Виправлено маршрут на "playlists"
+    [Route("api/playlists")]
     public class PlaylistController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -19,146 +19,120 @@ namespace SoundScape.Controllers
             _context = context;
         }
 
-        // GET: api/playlists
+        // Отримати всі плейлисти
         [HttpGet]
         public async Task<IActionResult> GetAllPlaylists()
         {
             var playlists = await _context.Playlists
                 .Include(p => p.PlaylistSongs)
-                .ThenInclude(ps => ps.Song) // Завантажуємо пісні
+                .ThenInclude(ps => ps.Song)
                 .ToListAsync();
 
-            var result = playlists.Select(playlist => new
+            var playlistDTOs = playlists.Select(p => new PlaylistDTO
             {
-                playlist.Id,
-                playlist.Name,
-                Songs = playlist.PlaylistSongs.Select(ps => new
-                {
-                    ps.Song.Id,
-                    ps.Song.Title,  // Використовуємо Title замість Name
-                    ps.Song.Artist,
-                    ps.Song.Album,
-                    ps.Song.Duration,
-                    ps.Song.FilePath
-                }).ToList()
+                Id = p.Id,
+                Name = p.Name,
+                SongIds = p.PlaylistSongs.Select(ps => ps.SongId).ToList() // Отримуємо список ідентифікаторів пісень
             }).ToList();
 
-            return Ok(result);
+            return Ok(playlistDTOs);
         }
 
-        // GET: api/playlists/5
+        // Отримати плейлист за ID
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPlaylistWithSongs(int id)
+        public async Task<IActionResult> GetPlaylistById(int id)
         {
             var playlist = await _context.Playlists
                 .Include(p => p.PlaylistSongs)
-                .ThenInclude(ps => ps.Song) // Завантажуємо пісні
+                .ThenInclude(ps => ps.Song)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (playlist == null)
-            {
-                return NotFound(new { message = "Playlist not found" });
-            }
+                return NotFound();
 
-            var result = new
+            var playlistDTO = new PlaylistDTO
             {
-                playlist.Id,
-                playlist.Name,
-                Songs = playlist.PlaylistSongs.Select(ps => new
-                {
-                    ps.Song.Id,
-                    ps.Song.Title,  // Використовуємо Title замість Name
-                    ps.Song.Artist,
-                    ps.Song.Album,
-                    ps.Song.Duration,
-                    ps.Song.FilePath
-                }).ToList()
+                Id = playlist.Id,
+                Name = playlist.Name,
+                SongIds = playlist.PlaylistSongs.Select(ps => ps.SongId).ToList() // Отримуємо список ідентифікаторів пісень
             };
 
-            return Ok(result);
+            return Ok(playlistDTO);
         }
 
-        // POST: api/playlists
+        // Створити новий плейлист
         [HttpPost]
-        public async Task<IActionResult> CreatePlaylist([FromBody] Playlist playlist)
+        public async Task<IActionResult> CreatePlaylist([FromBody] PlaylistDTO playlistDTO)
         {
-            if (playlist == null || string.IsNullOrWhiteSpace(playlist.Name))
-            {
-                return BadRequest(new { message = "Invalid playlist data." });
-            }
+            if (playlistDTO == null || string.IsNullOrWhiteSpace(playlistDTO.Name))
+                return BadRequest();
 
-            playlist.PlaylistSongs = new List<PlaylistSong>(); // Ініціалізуємо список
+            var playlist = new Playlist
+            {
+                Name = playlistDTO.Name
+            };
 
             _context.Playlists.Add(playlist);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetPlaylistWithSongs), new { id = playlist.Id }, playlist);
-        }
-
-        // DELETE: api/playlists/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePlaylist(int id)
-        {
-            var playlist = await _context.Playlists.FindAsync(id);
-
-            if (playlist == null)
+            // Додаємо пісні до плейлиста
+            foreach (var songId in playlistDTO.SongIds)
             {
-                return NotFound(new { message = "Playlist not found" });
+                _context.PlaylistSongs.Add(new PlaylistSong
+                {
+                    PlaylistId = playlist.Id,
+                    SongId = songId
+                });
             }
 
-            _context.Playlists.Remove(playlist);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetPlaylistById), new { id = playlist.Id }, playlist);
+        }
+
+        // Оновити інформацію про плейлист
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePlaylist(int id, [FromBody] PlaylistDTO playlistDTO)
+        {
+            if (playlistDTO == null || string.IsNullOrWhiteSpace(playlistDTO.Name))
+                return BadRequest();
+
+            var playlist = await _context.Playlists.FindAsync(id);
+            if (playlist == null)
+                return NotFound();
+
+            playlist.Name = playlistDTO.Name;
+
+            _context.Playlists.Update(playlist);
+            await _context.SaveChangesAsync();
+
+            // Оновлюємо пісні для плейлиста
+            var existingSongs = _context.PlaylistSongs.Where(ps => ps.PlaylistId == id).ToList();
+            _context.PlaylistSongs.RemoveRange(existingSongs);
+
+            foreach (var songId in playlistDTO.SongIds)
+            {
+                _context.PlaylistSongs.Add(new PlaylistSong
+                {
+                    PlaylistId = playlist.Id,
+                    SongId = songId
+                });
+            }
+
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        // POST: api/playlists/{playlistId}/songs/{songId}
-        [HttpPost("{playlistId}/songs/{songId}")]
-        public async Task<IActionResult> AddSongToPlaylist(int playlistId, int songId)
+        // Видалити плейлист
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePlaylist(int id)
         {
-            var playlist = await _context.Playlists.Include(p => p.PlaylistSongs).FirstOrDefaultAsync(p => p.Id == playlistId);
-            var song = await _context.Songs.FindAsync(songId);
+            var playlist = await _context.Playlists.FindAsync(id);
+            if (playlist == null)
+                return NotFound();
 
-            if (playlist == null || song == null)
-            {
-                return NotFound(new { message = "Playlist or Song not found" });
-            }
-
-            if (playlist.PlaylistSongs == null)
-            {
-                playlist.PlaylistSongs = new List<PlaylistSong>();
-            }
-
-            if (playlist.PlaylistSongs.Any(ps => ps.SongId == songId))
-            {
-                return BadRequest(new { message = "The song is already in the playlist." });
-            }
-
-            var playlistSong = new PlaylistSong
-            {
-                PlaylistId = playlistId,
-                SongId = songId
-            };
-
-            _context.PlaylistSongs.Add(playlistSong);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Song added to playlist successfully" });
-        }
-
-        // DELETE: api/playlists/{playlistId}/songs/{songId}
-        [HttpDelete("{playlistId}/songs/{songId}")]
-        public async Task<IActionResult> RemoveSongFromPlaylist(int playlistId, int songId)
-        {
-            var playlistSong = await _context.PlaylistSongs
-                .FirstOrDefaultAsync(ps => ps.PlaylistId == playlistId && ps.SongId == songId);
-
-            if (playlistSong == null)
-            {
-                return NotFound(new { message = "Song not found in the playlist" });
-            }
-
-            _context.PlaylistSongs.Remove(playlistSong);
+            _context.Playlists.Remove(playlist);
             await _context.SaveChangesAsync();
 
             return NoContent();

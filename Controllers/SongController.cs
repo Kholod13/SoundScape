@@ -1,181 +1,129 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SoundScape.Data;
 using SoundScape.Models;
-using SoundScape.Services;
-using Microsoft.Extensions.Logging;
-using System;
-using System.IO;
+using SoundScape.DTOs;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SoundScape.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/songs")]
     public class SongController : ControllerBase
     {
-        private readonly ISongService _songService;
-        private readonly ILogger<SongController> _logger;
-        private readonly string _uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
+        private readonly ApplicationDbContext _context;
 
-        public SongController(ISongService songService, ILogger<SongController> logger)
+        public SongController(ApplicationDbContext context)
         {
-            _songService = songService;
-            _logger = logger;
-            if (!Directory.Exists(_uploadFolder))
-            {
-                Directory.CreateDirectory(_uploadFolder);
-            }
+            _context = context;
         }
 
-        // GET: api/song
         [HttpGet]
         public async Task<IActionResult> GetAllSongs()
         {
-            try
-            {
-                var songs = await _songService.GetAllSongsAsync();
-                return Ok(songs);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error fetching songs");
-                return StatusCode(500, "Internal server error");
-            }
+            var songs = await _context.Songs
+                .Include(s => s.Album)  // Включаємо альбом
+                .Include(s => s.SongGenres)
+                    .ThenInclude(sg => sg.Genre)  // Включаємо жанри пісні
+                .Include(s => s.SongArtists)
+                    .ThenInclude(sa => sa.Artist)  // Включаємо артистів пісні
+                .Select(s => new SongDTO
+                {
+                    Id = s.Id,
+                    Title = s.Title,
+                    Duration = s.Duration,
+                    FilePath = s.FilePath,
+                    Album = s.Album.Title,  // Відображаємо заголовок альбому
+                    AlbumId = s.AlbumId,
+                    Genres = s.SongGenres.Select(sg => sg.Genre.Name).ToList(),  // Перетворюємо жанри в список імен
+                    Artists = s.SongArtists.Select(sa => sa.Artist.Name).ToList()  // Перетворюємо артистів в список імен
+                })
+                .ToListAsync();
+
+            return Ok(songs);
         }
 
-        // GET: api/song/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSongById(int id)
         {
-            try
+            var song = await _context.Songs
+                .Include(s => s.Album)  // Включаємо альбом
+                .Include(s => s.SongGenres)
+                    .ThenInclude(sg => sg.Genre)  // Включаємо жанри пісні
+                .Include(s => s.SongArtists)
+                    .ThenInclude(sa => sa.Artist)  // Включаємо артистів пісні
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+            if (song == null)
+                return NotFound();
+
+            var result = new SongDTO
             {
-                var song = await _songService.GetSongByIdAsync(id);
-                if (song == null)
-                {
-                    return NotFound();
-                }
-                return Ok(song);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Error fetching song with id {id}");
-                return StatusCode(500, "Internal server error");
-            }
+                Id = song.Id,
+                Title = song.Title,
+                Duration = song.Duration,
+                FilePath = song.FilePath,
+                Album = song.Album.Title,  // Відображаємо заголовок альбому
+                AlbumId = song.AlbumId,
+                Genres = song.SongGenres.Select(sg => sg.Genre.Name).ToList(),
+                Artists = song.SongArtists.Select(sa => sa.Artist.Name).ToList()
+            };
+
+            return Ok(result);
         }
 
-        // POST: api/song
         [HttpPost]
-        [Consumes("multipart/form-data")]
-        public async Task<IActionResult> CreateSong([FromForm] SongUploadDto model)
-
+        public async Task<IActionResult> CreateSong([FromBody] SongDTO songDTO)
         {
-            if (model == null)
+            if (songDTO == null || string.IsNullOrWhiteSpace(songDTO.Title))
+                return BadRequest();
+
+            var song = new Song
             {
-                _logger.LogWarning("Received null song data.");
-                return BadRequest("Song data cannot be null");
-            }
+                Title = songDTO.Title,
+                Duration = songDTO.Duration,
+                FilePath = songDTO.FilePath,
+                AlbumId = songDTO.AlbumId
+            };
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            _context.Songs.Add(song);
+            await _context.SaveChangesAsync();
 
-            if (model.Mp3File == null || model.Mp3File.Length == 0)
-            {
-                return BadRequest("No file uploaded.");
-            }
-
-            if (Path.GetExtension(model.Mp3File.FileName).ToLower() != ".mp3")
-            {
-                return BadRequest("Only MP3 files are allowed.");
-            }
-
-            try
-            {
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(model.Mp3File.FileName);
-                var filePath = Path.Combine(_uploadFolder, fileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await model.Mp3File.CopyToAsync(stream);
-                }
-
-                var song = new Song
-                {
-                    Title = model.Title,
-                    Artist = model.Artist,
-                    Album = model.Album,
-                    Duration = (decimal)model.Duration,
-                    FilePath = "/Uploads/" + fileName
-                };
-
-                _logger.LogInformation($"Adding new song: {song.Title} by {song.Artist}");
-                await _songService.AddSongAsync(song);
-
-                return CreatedAtAction(nameof(GetSongById), new { id = song.Id }, song);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error creating new song");
-                return StatusCode(500, "Internal server error");
-            }
+            return CreatedAtAction(nameof(GetSongById), new { id = song.Id }, song);
         }
 
-        // PUT: api/song/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSong(int id, [FromBody] Song song)
+        public async Task<IActionResult> UpdateSong(int id, [FromBody] SongDTO songDTO)
         {
-            if (id != song.Id)
-            {
-                return BadRequest("ID in request does not match model ID.");
-            }
+            if (songDTO == null || songDTO.Id != id)
+                return BadRequest();
 
-            try
-            {
-                var existingSong = await _songService.GetSongByIdAsync(id);
-                if (existingSong == null)
-                {
-                    return NotFound();
-                }
+            var song = await _context.Songs.FirstOrDefaultAsync(s => s.Id == id);
+            if (song == null)
+                return NotFound();
 
-                await _songService.UpdateSongAsync(song);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Error updating song with id {id}");
-                return StatusCode(500, "Internal server error");
-            }
+            song.Title = songDTO.Title;
+            song.Duration = songDTO.Duration;
+            song.FilePath = songDTO.FilePath;
+            song.AlbumId = songDTO.AlbumId;
+            _context.Songs.Update(song);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
 
-        // DELETE: api/song/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSong(int id)
         {
-            try
-            {
-                var existingSong = await _songService.GetSongByIdAsync(id);
-                if (existingSong == null)
-                {
-                    return NotFound();
-                }
+            var song = await _context.Songs.FirstOrDefaultAsync(s => s.Id == id);
+            if (song == null)
+                return NotFound();
 
-                await _songService.DeleteSongAsync(id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Error deleting song with id {id}");
-                return StatusCode(500, "Internal server error");
-            }
+            _context.Songs.Remove(song);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
-    }
-
-    public class SongUploadDto
-    {
-        public string Title { get; set; }
-        public string Artist { get; set; }
-        public string Album { get; set; }
-        public double Duration { get; set; }
-        public IFormFile Mp3File { get; set; }
     }
 }

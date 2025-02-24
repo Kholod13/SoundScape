@@ -1,14 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace SoundScape.Models
+﻿public class PlaylistSong
 {
-    public class PlaylistSong
-    {
-        public int PlaylistId { get; set; }
-        public int SongId { get; set; }
+    public int PlaylistId { get; set; }
+    public Playlist Playlist { get; set; }
 
-        // Навігаційні властивості
-        public Playlist Playlist { get; set; }
-        public Song Song { get; set; }
-    }
+    public int SongId { get; set; }
+    public Song Song { get; set; }
 }

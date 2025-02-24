@@ -1,14 +1,8 @@
-﻿using System.Text.Json.Serialization;
+﻿using SoundScape.Models;
 
-namespace SoundScape.Models
+public class Playlist
 {
-    public class Playlist
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-
-        // Колекція для зв'язку з піснями через таблицю PlaylistSong
-        [JsonIgnore] // Запобігає циклічній серіалізації
-        public ICollection<PlaylistSong> PlaylistSongs { get; set; } = new List<PlaylistSong>();
-    }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public ICollection<PlaylistSong> PlaylistSongs { get; set; } // Це з'єднує Playlist і Song
 }

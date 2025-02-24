@@ -1,38 +1,27 @@
 using Microsoft.EntityFrameworkCore;
 using SoundScape.Data;
-using SoundScape.Repositories;
-using SoundScape.Services;
-using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Додаємо підтримку контролерів та виглядів
-builder.Services.AddControllersWithViews()
+// Add support for controllers with JSON serialization settings
+builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        // Встановлюємо ReferenceHandler.Preserve для уникнення циклічних помилок
+        // Set ReferenceHandler.Preserve to avoid cyclical errors in JSON serialization
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
     });
 
-// Налаштовуємо підключення до бази даних
+// Configure database connection (PostgreSQL in this case)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Додаємо сервіси для пісень
-builder.Services.AddScoped<ISongRepository, SongRepository>();
-builder.Services.AddScoped<ISongService, SongService>();
-
-// Додаємо сервіси для плейлистів
-builder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
-builder.Services.AddScoped<IPlaylistService, PlaylistService>(); // Додано сервіс для плейлистів
-
-// Додаємо можливість переглядати вміст папки
+// Enable support for static files and directory browsing
 builder.Services.AddDirectoryBrowser();
 
 var app = builder.Build();
 
-// Конфігурація запитів
+// Configure the request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -40,18 +29,15 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();  // Використовуємо статичні файли для доступу до Uploads
+app.UseStaticFiles();  // Enable static files (e.g., for Uploads)
 
-// Додаємо можливість перегляду вмісту папки Uploads
+// Enable directory browsing for the /Uploads folder
 app.UseDirectoryBrowser("/Uploads");
 
 app.UseRouting();
-
 app.UseAuthorization();
 
-// Налаштовуємо маршрути
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+// Configure API controller routes
+app.MapControllers();
 
 app.Run();
