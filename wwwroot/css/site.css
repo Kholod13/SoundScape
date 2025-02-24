@@ -124,6 +124,12 @@ nav {
         gap: 10px; /* Добавляет небольшой отступ между кнопками */
         flex-wrap: nowrap; /* Запрещаем перенос элементов */
     }
+    nav div:first-child {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* Добавляет небольшой отступ между кнопками */
+        flex-wrap: nowrap; /* Запрещаем перенос элементов */
+    }
 
 header .btn1{
     height: 100%;
@@ -158,6 +164,7 @@ header .btn-container {
 nav .serchContainer{
     max-width:700px;
     width: 100%;
+    margin: 0 10px;
 }
 .form-control {
     display: flex;

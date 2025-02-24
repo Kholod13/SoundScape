@@ -5,7 +5,244 @@
     <link rel="stylesheet" href="~/css/index.css" />
 }
 <div class="main">
-    <div>
+    <nav>
+        <div class="lists">
+            <div class="item">
+                <a asp-controller="#" asp-action="#">
+                    <img src="/images/home_page_images/my-library_icon.png" alt="MyLibrary" />
+                    <p>Moя бібліотека</p>
+                </a>
+            </div>
+            <div class="item">
+                <a asp-controller="#" asp-action="#">
+                    <img src="~/images/home_page_images/favourite-songs_icon.png" alt="MyLibrary" />
+                    <p>Улюблені пісні</p>
+                </a>
+            </div>
+        </div>
+        <div class="sorts">
+            <button type="button" class="btn" id="sortAll">
+                <p>Усе</p>
+            </button>
+            <button type="button" class="btn" id="sortMusic">
+                <p>Музика</p>
+            </button>
+            <button type="button" class="btn" id="sortPodcasts">
+                <p>Подкасти</p>
+            </button>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="block_day-recomendation">
+            <div class="content">
+                <h1>Arctic Monkeys</h1>
+                <div class="row">
+                    <div class="item">
+                        <img src="images/home_page_images//music_icon.png" alt="songImage" />
+                    </div>
+                    <div class="item">
+                        <div class="under-title">
+                            <img src="~/images/home_page_images/ellipse-8.png" alt=""/>
+                            <p>Рекомендація дня</p>
+                        </div>
+                        <div class="song-name">
+                            <p class="name">I Wanna Be Yours</p>
+                            <button type="button" class="btn" id="share">
+                                <img src="~/images/home_page_images/share_icon.png" alt="Share"/>
+                            </button>
+                        </div>
+                        <div class="controls">
+                            <button type="button" class="btn" id="play">
+                                <img src="~/images//home_page_images/player_icon.png" alt="play" />
+                            </button>
+                            <button type="button" class="btn" id="add">
+                                <img src="/images//home_page_images/add_icon.png" alt="add" />
+                            </button>
+                            <button type="button" class="btn" id="more">
+                                <img src="/images//home_page_images//more_icon.png" alt="more" />
+                            </button>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <p class="artist-information">
+                            With their nervy and literate indie rock sound, Arctic Monkeys are a respected, adventurous, and successful group that could easily be called Britain's biggest band of the early 21st century.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="block_popular-artists">
+            <div class="control_item">
+                <img src="~/images/home_page_images/arrow_left.png" alt="arrow"/>
+            </div>
 
+            <div class="row">
+                <div class="item">
+                    <div class="image-container">
+                        <img src="~/images/artist-example-icon.png"/>
+                    </div>
+                    <p>Bad Bunny</p>
+                </div>
+                <div class="item">
+                    <div class="image-container">
+                        <img src="~/images/artist-example-icon.png" />
+                    </div>
+                    <p>Bad Bunny</p>
+                </div>
+                <div class="item">
+                    <div class="image-container">
+                        <img src="~/images/artist-example-icon.png" />
+                    </div>
+                    <p>Bad Bunny</p>
+                </div>
+                <div class="item">
+                    <div class="image-container">
+                        <img src="~/images/artist-example-icon.png" />
+                    </div>
+                    <p>Bad Bunny</p>
+                </div>
+                <div class="item">
+                    <div class="image-container">
+                        <img src="~/images/artist-example-icon.png" />
+                    </div>
+                    <p>Bad Bunny</p>
+                </div>
+            </div>
+
+            <div class="control_item">
+                <img src="~/images/home_page_images/arrow_right.png" alt="arrow" />
+            </div>
+        </div>
+        <div class="block_top10">
+             <h2 class="title">TOP 10</h2>
+             <div class="column">
+                 <ol>
+                    <li class="item">
+                        <div>
+                            <div class="image-container">
+                                <img src="images/song-example-icon.png" />
+                            </div>
+                            <div>
+                                <p class="name-song">Espresso</p>
+                                <p class="name-artist">Sabrina Carpenter</p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="count-views">1 833 572 218</p>
+                        </div>
+                        <div>
+                            <button type="button" class="btn" id="add">
+                                <img src="/images//home_page_images/add_icon.png" alt="add" />
+                            </button>
+                            <p class="time">2:55</p>
+                            <button type="button" class="btn" id="more">
+                                <img src="/images//home_page_images//more_icon.png" alt="more" />
+                            </button>
+                        </div>
+                    </li>
+                    <li class="item">
+                        <div>
+                            <div class="image-container">
+                                <img src="images/song-example-icon.png" />
+                            </div>
+                            <div>
+                                <p class="name-song">Espresso</p>
+                                <p class="name-artist">Sabrina Carpenter</p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="count-views">1 833 572 218</p>
+                        </div>
+                        <div>
+                            <button type="button" class="btn" id="add">
+                                <img src="/images//home_page_images/add_icon.png" alt="add" />
+                            </button>
+                            <p class="time">2:55</p>
+                            <button type="button" class="btn" id="more">
+                                <img src="/images//home_page_images//more_icon.png" alt="more" />
+                            </button>
+                        </div>
+                    </li>
+                 </ol>
+             </div>
+        </div>
+        <div class="block_best-world-albums">
+            <h2 class="title">Найкращі світові альбоми</h2>
+            <div class="row">
+                <div class="item">
+                    <div class="image-container">
+                        <img src="~/images/album-example-icon.png"/>
+                    </div>
+                    <p class="name-album">Short n’ Sweet</p>
+                    <p class="name-artist">Sabrina Carpenter</p>
+                </div>
+                <div class="item">
+                    <div class="image-container">
+                        <img src="~/images/album-example-icon.png" />
+                    </div>
+                    <p class="name-album">Short n’ Sweet</p>
+                    <p class="name-artist">Sabrina Carpenter</p>
+                </div>
+                <div class="item">
+                    <div class="image-container">
+                        <img src="~/images/album-example-icon.png" />
+                    </div>
+                    <p class="name-album">Short n’ Sweet</p>
+                    <p class="name-artist">Sabrina Carpenter</p>
+                </div>
+                <div class="item">
+                    <div class="image-container">
+                        <img src="~/images/album-example-icon.png" />
+                    </div>
+                    <p class="name-album">Short n’ Sweet</p>
+                    <p class="name-artist">Sabrina Carpenter</p>
+                </div>
+            </div>
+        </div>
+        <div class="block_mv">
+            <h2 class="title">MV</h2>
+            <div class="row">
+                <div class="item">
+                    <video src="~/images/home_page_images/mv-example-video.mp4"></video>
+                    <div class="info">
+                        <div class="image-container">
+                            <img src="~/images/song-example-icon.png" alt="icon" />
+                        </div>
+                        <div>
+                            <p class="name-song">Espresso</p>
+                            <p class="name-artist">Sabrina Carpenter</p>
+                        </div>
+                        <div>
+                            <button type="button" class="btn" id="add">
+                                <img src="/images//home_page_images/add_icon.png" alt="add" />
+                            </button>
+                            <button type="button" class="btn" id="share">
+                                <img src="~/images/home_page_images/share_icon.png" alt="Share" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <video src="~/images/home_page_images/mv-example-video.mp4"></video>
+                    <div class="info">
+                        <div class="image-container">
+                            <img src="~/images/song-example-icon.png" alt="icon" />
+                        </div>
+                        <div>
+                            <p class="name-song">Espresso</p>
+                            <p class="name-artist">Sabrina Carpenter</p>
+                        </div>
+                        <div>
+                            <button type="button" class="btn" id="add">
+                                <img src="/images//home_page_images/add_icon.png" alt="add" />
+                            </button>
+                            <button type="button" class="btn" id="share">
+                                <img src="~/images/home_page_images/share_icon.png" alt="Share" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>        
 </div>
