@@ -1,4 +1,5 @@
-﻿@{
+@{
+<<<<<<< HEAD
     ViewData["Title"] = "Home Page";
 }
 
@@ -6,3 +7,123 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+=======
+    ViewData["Title"] = "Моя бібліотека";
+}
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <!-- Заміна на зображення логотипу -->
+            <img src="/images/logo.png" alt="Logo" class="logo-img">
+        </div>
+        <nav class="nav">
+            <input type="text" class="search-bar" placeholder="Пошук">
+            <i class="fas fa-search"></i>
+        </nav>
+        <div class="header-right">
+            <button class="premium">Premium</button>
+            <div class="notifications">
+                <i class="fas fa-bell"></i>
+            </div>
+            <div class="profile-icon">
+                <img src="/images/frame.png" alt="Avatar" class="profile-avatar">
+            </div>
+        </div>
+    </header>
+    
+    <section class="library-navigation">
+        <button class="tab active">Моя бібліотека</button>
+        <button class="tab">Улюблені пісні</button>
+        <button class="tab">Усе</button>
+    </section>
+    
+    <section class="filters">
+        <button class="filter">Музика</button>
+        <button class="filter">Подкасти</button>
+        <button class="filter">Плейлисти</button>
+        <button class="filter">Виконавці</button>
+        <button class="filter">Альбоми</button>
+        <button class="filter">+</button>
+    </section>
+    
+    <section class="search-library">
+        <input type="text" class="search-bar" placeholder="Пошук у розділі 'Моя бібліотека'">
+    </section>
+    
+    <main class="library-content">
+        <div class="library-item">
+            <span class="icon">🎵</span>
+            <div>
+                <h3>Мій плейлист №1</h3>
+                <p>Плейлист • 2025</p>
+            </div>
+            <span class="more-options">⋮</span>
+        </div>
+        <div class="library-item">
+            <img src="/images/TS.png" alt="Taylor Swift" class="artist-img">
+            <div>
+                <h3>Taylor Swift</h3>
+                <p>Виконавець</p>
+            </div>
+            <span class="more-options">⋮</span>
+        </div>
+        <div class="library-item">
+            <img src="/images/ALTS1.png" alt="The Tortured Poets Department" class="album-img">
+            <div>
+                <h3>The Tortured Poets Department</h3>
+                <p>Альбом • 2024</p>
+            </div>
+            <span class="more-options">⋮</span>
+        </div>
+        <div class="library-item">
+            <img src="/images/Rectangle 16.png" alt="Подкаст" class="podcast-img">
+            <div>
+                <h3>Подкаст</h3>
+                <p>Подкаст • 2024</p>
+            </div>
+            <span class="more-options">⋮</span>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div>
+            <h4>Компанія</h4>
+            <p>Про нас</p>
+            <p>Вакансії</p>
+        </div>
+        <div>
+            <h4>Спільноти</h4>
+            <p>Для виконавців</p>
+            <p>Для розробників</p>
+            <p>Для інвесторів</p>
+            <p>Для рекламодавців</p>
+        </div>
+        <div>
+            <h4>Корисні посилання</h4>
+            <p>Підтримка</p>
+            <p>Мобільний додаток</p>
+        </div>
+        <div>
+            <h4>Підписки</h4>
+            <p>Premium Individual</p>
+            <p>Premium Duo</p>
+            <p>Premium Family</p>
+            <p>Premium Student</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+>>>>>>> 3713946 (Оновлення проекту)
+
