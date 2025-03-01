@@ -2,34 +2,36 @@
     ViewData["Title"] = "Home";
 }
 @section Styles {
-    <link rel="stylesheet" href="~/css/index.css" />
+    <link rel="stylesheet" href="/css/index.css" asp-append-version="true" />
 }
 <div class="main">
-    <nav>
-        <div class="lists">
-            <div class="item">
-                <a asp-controller="#" asp-action="#">
-                    <img src="/images/home_page_images/my-library_icon.png" alt="MyLibrary" />
-                    <p>Moя бібліотека</p>
-                </a>
+    <nav class="nav-main">
+        <div class="container">
+            <div class="lists">
+                <div class="item">
+                    <a asp-controller="#" asp-action="#">
+                        <img src="/images/home_page_images/my-library_icon.png" alt="MyLibrary" />
+                        <p>Moя бібліотека</p>
+                    </a>
+                </div>
+                <div class="item">
+                    <a asp-controller="#" asp-action="#">
+                        <img src="~/images/home_page_images/favourite-songs_icon.png" alt="MyLibrary" />
+                        <p>Улюблені пісні</p>
+                    </a>
+                </div>
             </div>
-            <div class="item">
-                <a asp-controller="#" asp-action="#">
-                    <img src="~/images/home_page_images/favourite-songs_icon.png" alt="MyLibrary" />
-                    <p>Улюблені пісні</p>
-                </a>
+            <div class="sorts">
+                <button type="button" class="btn" id="sortAll">
+                    <p>Усе</p>
+                </button>
+                <button type="button" class="btn" id="sortMusic">
+                    <p>Музика</p>
+                </button>
+                <button type="button" class="btn" id="sortPodcasts">
+                    <p>Подкасти</p>
+                </button>
             </div>
-        </div>
-        <div class="sorts">
-            <button type="button" class="btn" id="sortAll">
-                <p>Усе</p>
-            </button>
-            <button type="button" class="btn" id="sortMusic">
-                <p>Музика</p>
-            </button>
-            <button type="button" class="btn" id="sortPodcasts">
-                <p>Подкасти</p>
-            </button>
         </div>
     </nav>
     <div class="container">
@@ -72,57 +74,60 @@
             </div>
         </div>
         <div class="block_popular-artists">
-            <div class="control_item">
-                <img src="~/images/home_page_images/arrow_left.png" alt="arrow"/>
-            </div>
+            <h2 class="title">Популярні виконавці</h2>
+            <div class="container">
+                <button class="control_item">
+                    <img src="~/images/home_page_images/arrow_left.png" alt="arrow"/>
+                </button>
 
-            <div class="row">
-                <div class="item">
-                    <div class="image-container">
-                        <img src="~/images/artist-example-icon.png"/>
+                <div class="row">
+                    <div class="item">
+                        <div class="image-container">
+                            <img src="~/images/artist-example-icon.png"/>
+                        </div>
+                        <p>Bad Bunny</p>
                     </div>
-                    <p>Bad Bunny</p>
-                </div>
-                <div class="item">
-                    <div class="image-container">
-                        <img src="~/images/artist-example-icon.png" />
+                    <div class="item">
+                        <div class="image-container">
+                            <img src="~/images/artist-example-icon.png" />
+                        </div>
+                        <p>Bad Bunny</p>
                     </div>
-                    <p>Bad Bunny</p>
-                </div>
-                <div class="item">
-                    <div class="image-container">
-                        <img src="~/images/artist-example-icon.png" />
+                    <div class="item">
+                        <div class="image-container">
+                            <img src="~/images/artist-example-icon.png" />
+                        </div>
+                        <p>Bad Bunny</p>
                     </div>
-                    <p>Bad Bunny</p>
-                </div>
-                <div class="item">
-                    <div class="image-container">
-                        <img src="~/images/artist-example-icon.png" />
+                    <div class="item">
+                        <div class="image-container">
+                            <img src="~/images/artist-example-icon.png" />
+                        </div>
+                        <p>Bad Bunny</p>
                     </div>
-                    <p>Bad Bunny</p>
-                </div>
-                <div class="item">
-                    <div class="image-container">
-                        <img src="~/images/artist-example-icon.png" />
+                    <div class="item">
+                        <div class="image-container">
+                            <img src="~/images/artist-example-icon.png" />
+                        </div>
+                        <p>Bad Bunny</p>
                     </div>
-                    <p>Bad Bunny</p>
                 </div>
-            </div>
 
-            <div class="control_item">
-                <img src="~/images/home_page_images/arrow_right.png" alt="arrow" />
+                <button class="control_item">
+                    <img src="~/images/home_page_images/arrow_right.png" alt="arrow" />
+                </button>
             </div>
         </div>
         <div class="block_top10">
              <h2 class="title">TOP 10</h2>
              <div class="column">
-                 <ol>
+                 <ul>
                     <li class="item">
                         <div>
                             <div class="image-container">
                                 <img src="images/song-example-icon.png" />
                             </div>
-                            <div>
+                            <div class="text">
                                 <p class="name-song">Espresso</p>
                                 <p class="name-artist">Sabrina Carpenter</p>
                             </div>
@@ -130,7 +135,7 @@
                         <div>
                             <p class="count-views">1 833 572 218</p>
                         </div>
-                        <div>
+                        <div class="controls">
                             <button type="button" class="btn" id="add">
                                 <img src="/images//home_page_images/add_icon.png" alt="add" />
                             </button>
@@ -145,7 +150,7 @@
                             <div class="image-container">
                                 <img src="images/song-example-icon.png" />
                             </div>
-                            <div>
+                            <div class="text">
                                 <p class="name-song">Espresso</p>
                                 <p class="name-artist">Sabrina Carpenter</p>
                             </div>
@@ -153,7 +158,7 @@
                         <div>
                             <p class="count-views">1 833 572 218</p>
                         </div>
-                        <div>
+                        <div class="controls">
                             <button type="button" class="btn" id="add">
                                 <img src="/images//home_page_images/add_icon.png" alt="add" />
                             </button>
@@ -163,7 +168,7 @@
                             </button>
                         </div>
                     </li>
-                 </ol>
+                 </ul>
              </div>
         </div>
         <div class="block_best-world-albums">
@@ -203,7 +208,7 @@
             <h2 class="title">MV</h2>
             <div class="row">
                 <div class="item">
-                    <video src="~/images/home_page_images/mv-example-video.mp4"></video>
+                    
                     <div class="info">
                         <div class="image-container">
                             <img src="~/images/song-example-icon.png" alt="icon" />

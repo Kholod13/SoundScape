@@ -111,20 +111,20 @@ header {
     max-width: 1618px;
     margin: 0px auto;
 }
-nav {
+header nav {
     display: flex;
     justify-content: space-between;
     align-items: center; /* Выравниваем элементы по центру */
     flex-wrap: nowrap; /* Запрещаем перенос элементов */
     max-height: 54px;
 }
-    nav div:last-child {
+    header nav div:last-child {
         display: flex;
         align-items: center;
         gap: 10px; /* Добавляет небольшой отступ между кнопками */
         flex-wrap: nowrap; /* Запрещаем перенос элементов */
     }
-    nav div:first-child {
+    header nav div:first-child {
         display: flex;
         align-items: center;
         gap: 10px; /* Добавляет небольшой отступ между кнопками */

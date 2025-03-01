@@ -1,1 +1,302 @@
-﻿
+﻿.nav-main .container {
+    max-width: 1320px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+.nav-main {
+    background: #2D0140;
+    padding: 24px;
+    display: flex;
+    justify-content: space-between;
+}
+.nav-main .lists{
+    display: flex;
+    gap: 15px;
+}
+    .nav-main .lists .item a {
+        display: flex;
+        align-items: center;
+        color: var(--Text, #FFF);
+        font-family: "Noto Sans";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+    .nav-main .sorts button {
+        border-radius: 20px;
+        background: rgba(102, 2, 115, 0.25);
+        padding: 8px 16px;
+        color: var(--Text, #FFF);
+        font-family: "Noto Sans";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+        .nav-main .sorts button:active {
+            background: #660273;
+        }
+        .main .container{
+            max-width: 1320px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+/* block day recomendation */
+.block_day-recomendation{
+    background: url("../images/home_page_images/arctic-monkeys-background.png") no-repeat;
+    margin:32px 0;
+    border-radius: 20px;
+}
+        .block_day-recomendation .content h1 {
+            color: #FFF;
+            /* Noto Sans 96 bold */
+            font-family: "Noto Sans";
+            font-size: 96px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            padding: 8% 12%;
+        }
+        .block_day-recomendation .content .row{
+            margin:0 50px;
+            display: flex;
+            color: white;
+            gap: 40px;
+        }
+        .block_day-recomendation .item:nth-child(2){
+            min-width: 300px;
+        }
+    .block_day-recomendation .under-title{
+        color: #FFF;
+        font-family: "Noto Sans";
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        display: flex;
+        margin-bottom: 32px;
+    }
+    .block_day-recomendation .under-title img{
+        width: 16px;
+        height: 16px;
+        margin: auto 8px;
+    }
+    .block_day-recomendation .song-name {
+        color: var(--Text, #FFF);
+        font-family: "Noto Sans";
+        font-size: 28px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 70px;
+    }
+    .block_day-recomendation .song-name button{
+        background-color: transparent;
+    }
+    .block_day-recomendation .controls{
+        display: flex;
+        align-items: center;
+        gap:24px;
+    }
+    .block_day-recomendation .controls button{
+        background-color: transparent;
+    }
+.block_day-recomendation .row .item:last-child{
+    color: #FFF;
+    font-family: "Noto Sans";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    display: flex;
+    align-items: end;
+}
+/* block popular artists */
+.block_popular-artists {
+    margin: 64px 0;
+}
+    .block_popular-artists .title {
+        color: #FFF;
+        font-family: "Noto Sans";
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+    .block_popular-artists .container{
+        display: flex;
+        justify-content: space-between;
+        margin: 24px 0;
+    }
+    .block_popular-artists .row {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin: 0 32px;
+    }
+        .block_popular-artists .row .item p {
+            color: #FFF;
+            text-align: center;
+            font-family: "Noto Sans";
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
+.block_popular-artists .container button{
+    background-color: transparent;
+}
+/* block top 10 */
+.block_top10 .title{
+    color: #FFF;
+    font-family: "Noto Sans";
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+.block_top10 {
+    color: white;
+}
+.block_top10 li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+}
+.block_top10 .item div:first-child{
+    display: flex;
+}
+    .block_top10 .item .name-song {
+        color: #FFF;
+        font-family: "Noto Sans";
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        margin: 16px 32px;
+    }
+    .block_top10 .item .name-artist {
+        color: #FFF;
+        font-family: "Noto Sans";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        margin: 0 32px;
+    }
+    .block_top10 .item .controls {
+        display: flex;
+        align-items: center;
+        color: #FFF;
+        text-align: center;
+        font-family: "Noto Sans";
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        gap: 32px;
+    }
+    .btn{
+        background-color: transparent;
+    }
+.block_top10 .item .controls button img{
+    max-height: 35px;
+    max-width: 35px;
+}
+ul {
+    list-style: none; /* Убираем стандартные маркеры */
+    counter-reset: list-counter; /* Сбрасываем счетчик */
+    position: relative;
+    padding-left: 40px; /* Оставляем место под нумерацию */
+}
+
+    ul li {
+        counter-increment: list-counter; /* Увеличиваем счетчик */
+        position: relative;
+        padding: 10px 0;
+    }
+
+        ul li::before {
+            content: counter(list-counter); /* Подставляем номер */
+            position: absolute;
+            left: -30px; /* Смещаем влево */
+            top: 50%;
+            transform: translateY(-50%); /* Центрируем */
+
+            color: #FFF;
+            text-align: center;
+            font-family: "Noto Sans";
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            z-index: -1; /* Размещаем за текстом */
+        }
+
+/* block best world albums */
+.block_best-world-albums{
+    margin: 64px 0;
+}
+.block_best-world-albums .title {
+    color: #FFF;
+    font-family: "Noto Sans";
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 24px;
+}
+.block_best-world-albums .row{
+    display: flex;
+    justify-content: space-between;
+}
+    .block_best-world-albums .item .name-album {
+        color: #FFF;
+        text-align: center;
+        font-family: "Noto Sans";
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        font-variant: all-small-caps;
+    }
+    .block_best-world-albums .item .name-artist {
+        color: #FFF;
+        text-align: center;
+        font-family: "Noto Sans";
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+/* block mv */
+.block_mv .title {
+    color: #FFF;
+    font-family: "Noto Sans";
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom: 24px;
+}
+.block_mv .row{
+    display: flex;
+    justify-content:space-between;
+    gap: 15px;
+    margin-bottom:100px;
+}
+    .block_mv .row .item {
+        width: 50%;
+        height: 970px;
+        border-radius: 20px;
+        overflow: hidden;
+        background: url("~/images/home_page_images/mv-example-video.mp4") top, no-repeat;
+    }
+.block_mv .row .item .info{
+
+}

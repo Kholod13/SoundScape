@@ -46,5 +46,6 @@
     <None Include="wwwroot\images\icons_main-content\icon_volume.svg" />
     <None Include="wwwroot\images\logo.png" />
   </ItemGroup>
+	
 
 </Project>
