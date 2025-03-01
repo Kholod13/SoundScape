@@ -4,6 +4,7 @@ using SoundScape.Data;
 using SoundScape.Models;
 using SoundScape.DTOs;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace SoundScape.Controllers
 {
@@ -77,6 +78,20 @@ namespace SoundScape.Controllers
             return Ok(artists);
         }
 
+        // GET: api/artists/{id}/albums
+        [HttpGet("{id}/albums")]
+        public async Task<IActionResult> GetArtistAlbums(int id)
+        {
+            var albums = await _context.Albums
+                .Where(a => a.AlbumArtists.Any(aa => aa.ArtistId == id)) // Фільтрація за ArtistId через AlbumArtists
+                .ToListAsync();
+
+            if (albums == null || albums.Count == 0)
+                return NotFound(); // Якщо альбоми не знайдені
+
+            return Ok(albums); // Повернення альбомів
+        }
+
         // PUT: api/artists/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateArtist(int id, [FromBody] ArtistDTO artistDTO)
@@ -96,7 +111,7 @@ namespace SoundScape.Controllers
             _context.Artists.Update(artist);
             await _context.SaveChangesAsync();
 
-            return NoContent(); // Повертає статус 204 (No Content) - означає успішне оновлення без додаткового виводу
+            return NoContent();
         }
 
         // DELETE: api/artists/{id}
@@ -111,7 +126,7 @@ namespace SoundScape.Controllers
             _context.Artists.Remove(artist);
             await _context.SaveChangesAsync();
 
-            return NoContent(); // Повертає статус 204 (No Content) - означає успішне видалення без додаткового виводу
+            return NoContent();
         }
     }
 }

@@ -8,9 +8,7 @@ public class Song
     public string FilePath { get; set; }
     public int AlbumId { get; set; }
     public Album Album { get; set; }
-
     public List<SongGenre> SongGenres { get; set; } = new List<SongGenre>();
-    public ICollection<PlaylistSong> PlaylistSongs { get; set; }
-
-    public ICollection<SongArtist> SongArtists { get; set; } // тут встановлюється зв'язок з артистами
+    public ICollection<PlaylistSong> PlaylistSongs { get; set; } = new List<PlaylistSong>();
+    public ICollection<SongArtist> SongArtists { get; set; } = new List<SongArtist>();
 }

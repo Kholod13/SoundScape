@@ -4,7 +4,10 @@
     public string Title { get; set; }
     public decimal Price { get; set; }
     public int Year { get; set; }
-    public List<string> Artists { get; set; }
-    public List<string> Songs { get; set; }
-    public List<int> ArtistIds { get; set; }
+
+    // Список ID жанров
+    public List<int> GenreIds { get; set; } = new List<int>();
+
+    // Список ID артистов
+    public List<int> ArtistIds { get; set; } = new List<int>();
 }

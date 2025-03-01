@@ -3,11 +3,8 @@
     public int Id { get; set; }
     public string Title { get; set; }
     public TimeSpan Duration { get; set; }
-    public string FilePath { get; set; }
-    public string Album { get; set; }
+    public List<int> GenreIds { get; set; } = new List<int>();
+    public List<int> ArtistIds { get; set; } = new List<int>();
     public int AlbumId { get; set; }
-    public List<string> Genres { get; set; } = new List<string>();
-
-    // Додано для зв'язку з артистами
-    public List<string> Artists { get; set; } = new List<string>();
+    public string FilePath { get; set; }
 }
