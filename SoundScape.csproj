@@ -52,6 +52,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\images\playlists\" />
     <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\music\" />
   </ItemGroup>
 
 </Project>
