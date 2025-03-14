@@ -1,49 +1,310 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - SoundScape</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>SoundScape - @ViewData["Title"]</title>
+
+    @RenderSection("Styles", required: false)
+
+    <!-- Підключення CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/SoundScape.styles.css" asp-append-version="true" />
+    <link rel="icon" type="image/x-icon" href="~/images/logo.ico" />
+    <style>
+        /* Стиль для меню */
+        .options-menu {
+            display: none; /* За замовчуванням меню приховане */
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 5px;
+            right: 5px;
+            top: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        .options-menu.active {
+            display: block; /* Показуємо меню, коли є клас active */
+        }
+
+        .more-options {
+            cursor: pointer;
+            font-size: 14px; /* Зменшено розмір шрифта */
+        }
+
+        .close-menu {
+            cursor: pointer;
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            font-size: 12px; /* Зменшено розмір шрифта */
+        }
+
+        .searchContainer input {
+            font-size: 12px; /* Зменшено шрифт для пошукового поля */
+            padding: 4px;
+        }
+
+        .btn1, .btn2, .btn {
+            font-size: 12px; /* Зменшено шрифт для кнопок */
+            padding: 4px 6px;
+        }
+
+        .library-item h3 {
+            font-size: 14px; /* Зменшено шрифт для заголовка */
+        }
+
+        .library-item p {
+            font-size: 10px; /* Зменшено шрифт для опису */
+        }
+
+        .navigation-buttons .nav-button {
+            font-size: 12px; /* Зменшено шрифт для кнопок навігації */
+            padding: 4px 6px;
+        }
+
+        .search-bar-container input {
+            font-size: 12px; /* Зменшено шрифт для пошукової панелі */
+        }
+
+        .filter {
+            font-size: 5px; /* Зменшено шрифт для кнопок фільтрів */
+            padding: 4px 6px;
+        }
+
+        .plus {
+            font-size: 12px; /* Зменшено шрифт для кнопки плюс */
+            padding: 4px 6px;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SoundScape</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+        <nav class="container">
+            <div>
+                <a asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo.png" alt="логотип" />
+                </a>
+                <button type="button" class="btn1 btn-primary" id="home" aria-label="Домашня сторінка">
+                    <img src="/images/icons_main-content/icon_home.svg" alt="іконка домашньої сторінки"/>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+            </div>
+            <div class="searchContainer">
+                <input type="text" id="mainSearch" name="mainSearch" class="form-control" placeholder="Пошук" aria-label="Пошук на сайті"/>
+            </div>
+            <div>
+                <button type="button" class="btn btn-container" id="premium" aria-label="Premium підписка">
+                    <p>Premium</p>
+                </button>
+                <button type="button" class="btn2 btn-primary" id="messages" aria-label="Повідомлення">
+                    <img src="/images/icons_main-content/icon_messages.svg" alt="іконка повідомлень"/>
+                </button>
+                <button type="button" class="btn btn-primary" id="profile" aria-label="Профіль користувача">
+                    <img src="/images/ava_example.svg" alt="аватар користувача"/>
+                </button>
             </div>
         </nav>
     </header>
+
     <div class="container">
-        <main role="main" class="pb-3">
+        <section class="top-navigation">
+            <div class="logo">
+                <img src="/images/path-to-your-heart-ico.jpg" class="favorite-icon">
+                <i class="fa fa-th-large"></i> <span>Моя бібліотека</span>
+                <img src="/images/path-to-your-heart-icon.jpg" class="favorite-icon">
+                <span>Улюблені пісні</span>
+            </div>
+
+            <div class="navigation-buttons">
+                <a href="/all" class="nav-button">
+                    <button class="nav-button">Усе</button>
+                </a>
+                <a href="/music" class="nav-button">
+                    <button class="nav-button">Музика</button>
+                </a>
+                <a href="/podcasts" class="nav-button">
+                    <button class="nav-button">Подкасти</button>
+                </a>
+            </div>
+        </section>
+
+        <main class="library-content">
             @RenderBody()
         </main>
+
+        <!-- Нижня панель пошуку та фільтрів -->
+        <section class="bottom-navigation">
+            <div class="search-bar-container">
+                <input type="text" class="search-bar" placeholder="Пошук у розділі 'Моя бібліотека'" aria-label="Пошук у бібліотеці">
+                <i class="fa fa-search search-icon"></i>
+            </div>
+            <div class="filters">
+                <a href="/playlists" class="filter">
+                    <button class="filter">Плейлисти</button>
+                </a>
+                <a href="/artists" class="filter">
+                    <button class="filter">Виконавці</button>
+                </a>
+                <a href="/albums" class="filter">
+                    <button class="filter">Альбоми</button>
+                </a>
+                <a href="/podcasts" class="filter">
+                    <button class="filter">Подкасти</button>
+                </a>
+            </div>
+            <a href="/create-new" class="filter plus">
+                <button class="filter plus">+</button>
+            </a>
+        </section>
+
+        <style>
+            .filter {
+                font-size: 10px; /* Зменшений розмір шрифта для кнопок фільтрів */
+                padding: 4px 8px; /* Зменшене відступи для кнопок */
+                margin: 2px; /* Додано відступи між кнопками */
+            }
+
+            .plus {
+                font-size: 14px; /* Зменшений розмір шрифта для кнопки плюс */
+                padding: 4px 6px; /* Зменшені відступи */
+            }
+        </style>
+
+        <!-- Контент бібліотеки -->
+        <main class="library-content">
+            <div class="library-item">
+                <span class="icon"></span>
+                <div class="item-text">
+                    <h3>Мій плейлист №1</h3>
+                    <p>Плейлист • 2025</p>
+                </div>
+                <span class="more-options" onclick="toggleMenu(event)">⋮</span>
+                <div class="options-menu">
+                    <span class="close-menu" onclick="closeMenu(event)">×</span>
+                    <ul>
+                        <li><a href="#">Редагувати</a></li>
+                        <li><a href="#">Видалити</a></li>
+                        <li><a href="#">Додати в плейлист</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="library-item">
+                <img src="images/TS.png" alt="Taylor Swift" class="artist-img" />
+                <div class="item-text">
+                    <h3>Taylor Swift</h3>
+                    <p>Виконавець</p>
+                </div>
+                <span class="more-options" onclick="toggleMenu(event)">⋮</span>
+                <div class="options-menu">
+                    <span class="close-menu" onclick="closeMenu(event)">×</span>
+                    <ul>
+                        <li><a href="#">Редагувати</a></li>
+                        <li><a href="#">Видалити</a></li>
+                        <li><a href="#">Додати в плейлист</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="library-item">
+                <img src="images/ALTS1.png" alt="The Tortured Poets Department" class="album-img" />
+                <div class="item-text">
+                    <h3>The Tortured Poets Department</h3>
+                    <p>Альбом • 2024</p>
+                </div>
+                <span class="more-options" onclick="toggleMenu(event)">⋮</span>
+                <div class="options-menu">
+                    <span class="close-menu" onclick="closeMenu(event)">×</span>
+                    <ul>
+                        <li><a href="#">Редагувати</a></li>
+                        <li><a href="#">Видалити</a></li>
+                        <li><a href="#">Додати в плейлист</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="library-item">
+                <img src="images/Rectangle 16.png" alt="Подкаст" class="podcast-img" />
+                <div class="item-text">
+                    <h3>Подкаст</h3>
+                    <p>Подкаст • 2024</p>
+                </div>
+                <span class="more-options" onclick="toggleMenu(event)">⋮</span>
+                <div class="options-menu">
+                    <span class="close-menu" onclick="closeMenu(event)">×</span>
+                    <ul>
+                        <li><a href="#">Редагувати</a></li>
+                        <li><a href="#">Видалити</a></li>
+                        <li><a href="#">Додати в плейлист</a></li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+
     </div>
 
-    <footer class="border-top footer text-muted">
+    <!-- Футер -->
+    <footer>
         <div class="container">
-            &copy; 2025 - SoundScape - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <!-- Перша колонка: Компанія -->
+            <div class="column">
+                <h4>Компанія</h4>
+                <ul>
+                    <li><a href="#">Про нас</a></li>
+                    <li><a href="#">Вакансії</a></li>
+                </ul>
+            </div>
+
+            <!-- Друга колонка: Спільноти -->
+            <div class="column">
+                <h4>Спільноти</h4>
+                <ul>
+                    <li><a href="#">Для виконавців</a></li>
+                    <li><a href="#">Для розробників</a></li>
+                    <li><a href="#">Для інвесторів</a></li>
+                    <li><a href="#">Для рекламодавців</a></li>
+                </ul>
+            </div>
+
+            <!-- Третя колонка: Корисні посилання -->
+            <div class="column">
+                <h4>Корисні посилання</h4>
+                <ul>
+                    <li><a href="#">Підтримка</a></li>
+                    <li><a href="#">Мобільний додаток</a></li>
+                </ul>
+            </div>
+
+            <!-- Четверта колонка: Підписки -->
+            <div class="column">
+                <h4>Підписки</h4>
+                <ul>
+                    <li><a href="#">Premium Individual</a></li>
+                    <li><a href="#">Premium Duo</a></li>
+                    <li><a href="#">Premium Family</a></li>
+                    <li><a href="#">Premium Student</a></li>
+                </ul>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- Вбудований JavaScript -->
+    <script>
+        // Функція для перемикання стану меню при натисканні на три крапки
+        function toggleMenu(event) {
+            const menu = event.target.closest('.library-item').querySelector('.options-menu');
+            menu.classList.toggle('active');
+        }
+
+        // Функція для закриття меню при натисканні на хрестик
+        function closeMenu(event) {
+            const menu = event.target.closest('.options-menu');
+            menu.classList.remove('active');
+        }
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
