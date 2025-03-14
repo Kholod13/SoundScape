@@ -1,5 +1,3 @@
-
-
 body {
     font-family: Arial, sans-serif;
     background-color: #121212;
@@ -37,7 +35,7 @@ body {
     border-radius: 30px;
     padding: 15px 25px;
     color: white;
-    width: 50%;
+    width: 60%; /* Було 50%, тепер 60% */
     font-size: 18px;
 }
 
@@ -116,7 +114,7 @@ body {
 }
 
 .search-bar {
-    width: 20%;
+    width: 60%; /* Оновлено, було 50% */
 }
 
 .library-content {
@@ -172,7 +170,7 @@ body {
     }
 
     .search-bar {
-        width: 100%;
+        width: 80%; /* Для мобільних пристроїв ще більше розтягуємо */
     }
 
     .header-right {
