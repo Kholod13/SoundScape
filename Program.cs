@@ -110,6 +110,19 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapGet("/api/search", async (HttpContext context, ApplicationDbContext db) =>
+{
+    var query = context.Request.Query["query"].ToString();
+
+    if (string.IsNullOrWhiteSpace(query))
+        return Results.BadRequest("Search query is required");
+
+    var tracks = await db.MusicTracks
+        .Where(t => t.Title.Contains(query) || t.Artist.Contains(query))
+        .ToListAsync();
+
+    return tracks.Any() ? Results.Ok(tracks) : Results.NotFound("No tracks found.");
+});
 
 app.Run();
 

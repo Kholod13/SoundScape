@@ -14,6 +14,6 @@ namespace SoundScape.Models
         public string Gender { get; set; }
         public string AvatarUrl { get; set; } = "/images/default-avatar.png";
         public ICollection<Track> FavoriteTracks { get; set; }
-        public object Orders { get; internal set; }
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }
