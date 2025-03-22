@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using SoundScape.Data;
 using SoundScape.Models;
-using SoundScape.DTOs;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace SoundScape.Controllers
 {
@@ -13,35 +15,40 @@ namespace SoundScape.Controllers
     public class AlbumController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly string _baseUrl = "http://localhost:5253/Uploads/";  // Задаємо базовий URL для файлів
 
         public AlbumController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // Получение всех альбомов
         [HttpGet]
         public async Task<IActionResult> GetAllAlbums()
         {
             var albums = await _context.Albums
                 .Include(a => a.AlbumGenres)
-                    .ThenInclude(ag => ag.Genre) // Включаем жанры альбома
+                    .ThenInclude(ag => ag.Genre)
                 .Include(a => a.AlbumArtists)
-                    .ThenInclude(aa => aa.Artist) // Включаем артистов альбома
+                    .ThenInclude(aa => aa.Artist)
+                .Include(a => a.Songs)
+                    .ThenInclude(s => s.SongArtists)
+                        .ThenInclude(sa => sa.Artist) // Включаємо артистів пісень
                 .ToListAsync();
 
             return Ok(albums);
         }
 
-        // Получение альбома по ID
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAlbumById(int id)
         {
             var album = await _context.Albums
                 .Include(a => a.AlbumGenres)
-                    .ThenInclude(ag => ag.Genre) // Включаем жанры альбома
+                    .ThenInclude(ag => ag.Genre)
                 .Include(a => a.AlbumArtists)
-                    .ThenInclude(aa => aa.Artist) // Включаем артистов альбома
+                    .ThenInclude(aa => aa.Artist)
+                .Include(a => a.Songs)
+                    .ThenInclude(s => s.SongArtists)
+                        .ThenInclude(sa => sa.Artist) // Включаємо артистів пісень
                 .FirstOrDefaultAsync(a => a.Id == id);
 
             if (album == null)
@@ -50,108 +57,47 @@ namespace SoundScape.Controllers
             return Ok(album);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateAlbum([FromBody] AlbumDTO albumDTO)
+        // GET: api/albums/{id}/songs
+        [HttpGet("{id}/songs")]
+        public async Task<IActionResult> GetSongsForAlbum(int id)
         {
-            if (albumDTO == null || string.IsNullOrWhiteSpace(albumDTO.Title))
-                return BadRequest("Album data is invalid.");
+            // Получаем альбом с песнями и артистами
+            var album = await _context.Albums
+                .Include(a => a.Songs)
+                    .ThenInclude(s => s.SongArtists)
+                        .ThenInclude(sa => sa.Artist)
+                .FirstOrDefaultAsync(a => a.Id == id);
 
-            var album = new Album
+            // Если альбом не найден, возвращаем ошибку
+            if (album == null)
+                return NotFound();
+
+            // Получаем список песен альбома
+            var songs = album.Songs.Select(song => new SongDTO
             {
-                Title = albumDTO.Title,
-                Price = albumDTO.Price,
-                Year = albumDTO.Year
-            };
+                Id = song.Id,
+                Title = song.Title,
+                // Преобразуем Duration (TimeSpan) в строку в формате "hh:mm:ss"
+                Duration = song.Duration.ToString(@"hh\:mm\:ss"),
+                FilePath = GetFileUrl(song.FilePath),  // Замена локального пути на URL
+                AlbumId = song.AlbumId,
+                AlbumTitle = song.Album?.Title, // Добавляем название альбома
+                AlbumYear = song.Album?.Year,   // Добавляем год альбома
+                AlbumCoverUrl = song.Album?.CoverUrl, // Добавляем URL обложки альбома
+                Lyrics = song.Lyrics,  // Текст песни
+                Artists = song.SongArtists.Select(sa => sa.Artist.Name).ToList()  // Получаем список артистов
+            }).ToList();
 
-            // Инициализация коллекций
-            album.AlbumGenres = new List<AlbumGenre>();
-            album.AlbumArtists = new List<AlbumArtist>();
-
-            // Добавление жанров
-            foreach (var genreId in albumDTO.GenreIds)
-            {
-                var genre = await _context.Genres.FindAsync(genreId);
-                if (genre == null)
-                {
-                    return NotFound($"Genre with Id {genreId} not found.");
-                }
-                album.AlbumGenres.Add(new AlbumGenre { GenreId = genreId });
-            }
-
-            // Добавление артистов
-            foreach (var artistId in albumDTO.ArtistIds)
-            {
-                var artist = await _context.Artists.FindAsync(artistId);
-                if (artist == null)
-                {
-                    return NotFound($"Artist with Id {artistId} not found.");
-                }
-                album.AlbumArtists.Add(new AlbumArtist { ArtistId = artistId });
-            }
-
-            _context.Albums.Add(album);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetAlbumById), new { id = album.Id }, album);
+            return Ok(songs);
         }
 
 
 
-        // Обновление альбома
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAlbum(int id, [FromBody] AlbumDTO albumDTO)
+        // Метод для заміни локального шляху на URL
+        private string GetFileUrl(string filePath)
         {
-            if (albumDTO == null || albumDTO.Id != id)
-                return BadRequest();
-
-            var album = await _context.Albums.FirstOrDefaultAsync(a => a.Id == id);
-            if (album == null)
-                return NotFound();
-
-            album.Title = albumDTO.Title;
-            album.Price = albumDTO.Price;
-            album.Year = albumDTO.Year;
-
-            // Обновляем жанры
-            album.AlbumGenres.Clear(); // Удаляем старые жанры
-            foreach (var genreId in albumDTO.GenreIds)
-            {
-                var genre = await _context.Genres.FindAsync(genreId);
-                if (genre != null)
-                {
-                    album.AlbumGenres.Add(new AlbumGenre { GenreId = genreId });
-                }
-            }
-
-            // Обновляем артистов
-            album.AlbumArtists.Clear(); // Удаляем старых артистов
-            foreach (var artistId in albumDTO.ArtistIds)
-            {
-                var artist = await _context.Artists.FindAsync(artistId);
-                if (artist != null)
-                {
-                    album.AlbumArtists.Add(new AlbumArtist { ArtistId = artistId });
-                }
-            }
-
-            _context.Albums.Update(album);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        // Удаление альбома
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAlbum(int id)
-        {
-            var album = await _context.Albums.FirstOrDefaultAsync(a => a.Id == id);
-            if (album == null)
-                return NotFound();
-
-            _context.Albums.Remove(album);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            var fileName = Path.GetFileName(filePath);  // Отримуємо назву файлу
+            return $"{_baseUrl}{Uri.EscapeDataString(fileName)}";  // Формуємо URL для файлу
         }
     }
 }

@@ -11,4 +11,9 @@ public class Song
     public List<SongGenre> SongGenres { get; set; } = new List<SongGenre>();
     public ICollection<PlaylistSong> PlaylistSongs { get; set; } = new List<PlaylistSong>();
     public ICollection<SongArtist> SongArtists { get; set; } = new List<SongArtist>();
+
+    public string Lyrics { get; set; }
+
+    public string CoverImageUrl { get; set; }  // <-- Ось ця властивість
+
 }

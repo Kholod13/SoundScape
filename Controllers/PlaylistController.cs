@@ -19,24 +19,59 @@ namespace SoundScape.Controllers
             _context = context;
         }
 
-        // Отримати всі плейлисти
-        [HttpGet]
-        public async Task<IActionResult> GetAllPlaylists()
+        // Створити новий плейлист (тільки назва)
+        [HttpPost]
+        public async Task<IActionResult> CreatePlaylist([FromBody] PlaylistDTO playlistDTO)
         {
-            var playlists = await _context.Playlists
-                .Include(p => p.PlaylistSongs)
-                .ThenInclude(ps => ps.Song)
-                .ToListAsync();
+            if (playlistDTO == null || string.IsNullOrWhiteSpace(playlistDTO.Name))
+                return BadRequest("Назва плейлиста обов'язкова");
 
-            var playlistDTOs = playlists.Select(p => new PlaylistDTO
+            var playlist = new Playlist
             {
-                Id = p.Id,
-                Name = p.Name,
-                SongIds = p.PlaylistSongs.Select(ps => ps.SongId).ToList() // Отримуємо список ідентифікаторів пісень
-            }).ToList();
+                Name = playlistDTO.Name
+            };
 
-            return Ok(playlistDTOs);
+            _context.Playlists.Add(playlist);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetPlaylistById), new { id = playlist.Id }, playlist);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePlaylist(int id, [FromBody] PlaylistDTO playlistDTO)
+        {
+            if (playlistDTO.SongIds == null || playlistDTO.SongIds.Count == 0)
+                return BadRequest("SongIds are required for updating playlist.");
+
+            var playlist = await _context.Playlists.FindAsync(id);
+            if (playlist == null)
+                return NotFound();
+
+            // Якщо передано ім'я, оновлюємо його
+            if (!string.IsNullOrWhiteSpace(playlistDTO.Name))
+            {
+                playlist.Name = playlistDTO.Name;
+            }
+
+            // Оновлюємо пісні для плейлиста
+            var existingSongs = _context.PlaylistSongs.Where(ps => ps.PlaylistId == id).ToList();
+            _context.PlaylistSongs.RemoveRange(existingSongs);
+
+            foreach (var songId in playlistDTO.SongIds)
+            {
+                _context.PlaylistSongs.Add(new PlaylistSong
+                {
+                    PlaylistId = playlist.Id,
+                    SongId = songId
+                });
+            }
+
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+
 
         // Отримати плейлист за ID
         [HttpGet("{id}")]
@@ -60,68 +95,23 @@ namespace SoundScape.Controllers
             return Ok(playlistDTO);
         }
 
-        // Створити новий плейлист
-        [HttpPost]
-        public async Task<IActionResult> CreatePlaylist([FromBody] PlaylistDTO playlistDTO)
+        // Отримати всі плейлисти
+        [HttpGet]
+        public async Task<IActionResult> GetAllPlaylists()
         {
-            if (playlistDTO == null || string.IsNullOrWhiteSpace(playlistDTO.Name))
-                return BadRequest();
+            var playlists = await _context.Playlists
+                .Include(p => p.PlaylistSongs)
+                .ThenInclude(ps => ps.Song)
+                .ToListAsync();
 
-            var playlist = new Playlist
+            var playlistDTOs = playlists.Select(p => new PlaylistDTO
             {
-                Name = playlistDTO.Name
-            };
+                Id = p.Id,
+                Name = p.Name,
+                SongIds = p.PlaylistSongs.Select(ps => ps.SongId).ToList() // Отримуємо список ідентифікаторів пісень
+            }).ToList();
 
-            _context.Playlists.Add(playlist);
-            await _context.SaveChangesAsync();
-
-            // Додаємо пісні до плейлиста
-            foreach (var songId in playlistDTO.SongIds)
-            {
-                _context.PlaylistSongs.Add(new PlaylistSong
-                {
-                    PlaylistId = playlist.Id,
-                    SongId = songId
-                });
-            }
-
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetPlaylistById), new { id = playlist.Id }, playlist);
-        }
-
-        // Оновити інформацію про плейлист
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePlaylist(int id, [FromBody] PlaylistDTO playlistDTO)
-        {
-            if (playlistDTO == null || string.IsNullOrWhiteSpace(playlistDTO.Name))
-                return BadRequest();
-
-            var playlist = await _context.Playlists.FindAsync(id);
-            if (playlist == null)
-                return NotFound();
-
-            playlist.Name = playlistDTO.Name;
-
-            _context.Playlists.Update(playlist);
-            await _context.SaveChangesAsync();
-
-            // Оновлюємо пісні для плейлиста
-            var existingSongs = _context.PlaylistSongs.Where(ps => ps.PlaylistId == id).ToList();
-            _context.PlaylistSongs.RemoveRange(existingSongs);
-
-            foreach (var songId in playlistDTO.SongIds)
-            {
-                _context.PlaylistSongs.Add(new PlaylistSong
-                {
-                    PlaylistId = playlist.Id,
-                    SongId = songId
-                });
-            }
-
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return Ok(playlistDTOs);
         }
 
         // Видалити плейлист

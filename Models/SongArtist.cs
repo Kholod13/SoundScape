@@ -4,5 +4,5 @@
     public Song Song { get; set; }
 
     public int ArtistId { get; set; }
-    public Artist Artist { get; set; }
+    public Artist Artist { get; set; }  // Це зв'язок з артистом
 }

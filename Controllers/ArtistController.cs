@@ -19,7 +19,7 @@ namespace SoundScape.Controllers
             _context = context;
         }
 
-        // POST: api/artists
+        // POST: api/artist
         [HttpPost]
         public async Task<IActionResult> CreateArtist([FromBody] ArtistDTO artistDTO)
         {
@@ -47,6 +47,8 @@ namespace SoundScape.Controllers
         public async Task<IActionResult> GetArtistById(int id)
         {
             var artist = await _context.Artists
+                .Include(a => a.AlbumArtists) // Завантажуємо зв'язки з альбомами
+                .ThenInclude(aa => aa.Album)  // Завантажуємо самі альбоми
                 .FirstOrDefaultAsync(a => a.Id == id);
 
             if (artist == null)
@@ -56,11 +58,53 @@ namespace SoundScape.Controllers
             {
                 Id = artist.Id,
                 Name = artist.Name,
-                Bio = artist.Bio
+                Bio = artist.Bio,
+                Albums = artist.AlbumArtists.Select(aa => new AlbumDTO
+                {
+                    Id = aa.Album.Id,
+                    Title = aa.Album.Title,
+                    Year = aa.Album.Year,
+                    CoverUrl = aa.Album.CoverUrl
+                }).ToList() // Додаємо альбоми до DTO
             };
 
             return Ok(artistDTO);
         }
+
+        // GET: api/artists/{id}/songs
+        // GET: api/artists/{id}/songs
+        [HttpGet("{id}/songs")]
+        public async Task<IActionResult> GetArtistSongs(int id)
+        {
+            // Перевірка, чи існує артист
+            var artistExists = await _context.Artists.AnyAsync(a => a.Id == id);
+            if (!artistExists)
+                return NotFound($"Artist with ID {id} not found.");
+
+            // Отримання пісень артиста через зв'язки
+            var songs = await _context.Songs
+                .Where(s => s.Album.AlbumArtists.Any(aa => aa.ArtistId == id))
+                .Select(s => new SongDTO
+                {
+                    Id = s.Id,
+                    Title = s.Title,
+                    // Преобразуем Duration (TimeSpan) в строку, например в формате "hh:mm:ss"
+                    Duration = s.Duration.ToString(@"hh\:mm\:ss"),
+                    AlbumId = s.AlbumId,
+                    AlbumTitle = s.Album.Title,
+                    AlbumYear = s.Album.Year,  // Додаємо рік альбому
+                    AlbumCoverUrl = s.Album.CoverUrl,  // Додаємо URL обкладинки альбому
+                    Lyrics = s.Lyrics  // Добавляем текст песни
+                })
+                .ToListAsync();
+
+            if (songs == null || songs.Count == 0)
+                return NotFound($"No songs found for artist with ID {id}.");
+
+            return Ok(songs);
+        }
+
+
 
         // GET: api/artists
         [HttpGet]
@@ -84,12 +128,22 @@ namespace SoundScape.Controllers
         {
             var albums = await _context.Albums
                 .Where(a => a.AlbumArtists.Any(aa => aa.ArtistId == id)) // Фільтрація за ArtistId через AlbumArtists
+                .Include(a => a.AlbumArtists) // Завантажуємо зв'язки між альбомами та артистами
                 .ToListAsync();
 
             if (albums == null || albums.Count == 0)
                 return NotFound(); // Якщо альбоми не знайдені
 
-            return Ok(albums); // Повернення альбомів
+            // Повернення альбомів з детальною інформацією
+            var albumDTOs = albums.Select(a => new AlbumDTO
+            {
+                Id = a.Id,
+                Title = a.Title,
+                Year = a.Year,
+                CoverUrl = a.CoverUrl
+            }).ToList();
+
+            return Ok(albumDTOs); // Повернення альбомів
         }
 
         // PUT: api/artists/{id}

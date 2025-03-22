@@ -17,11 +17,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Додаємо CORS для підтримки запитів із фронтенду
+// Додаємо CORS для підтримки запитів із фронтенду
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigins",
-        builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+        builder => builder.WithOrigins("http://localhost:5173") // Дозволяє запити лише з цього джерела
+                      .AllowAnyMethod()
+                      .AllowAnyHeader());
 });
+
 
 // Додаємо підтримку статичних файлів та перегляду каталогів
 builder.Services.AddDirectoryBrowser();
@@ -45,12 +49,14 @@ if (!Directory.Exists(uploadsPath))
     Directory.CreateDirectory(uploadsPath);
 }
 
+// Налаштування доступу до папки Uploads для віддалених запитів
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(uploadsPath),
     RequestPath = "/Uploads"
 });
 
+// Додаємо підтримку перегляду файлів у папці "Uploads"
 app.UseDirectoryBrowser(new DirectoryBrowserOptions
 {
     FileProvider = new PhysicalFileProvider(uploadsPath),
