@@ -1,0 +1,13 @@
+npm run dev
+cd frontend
+
+
+import React from "react";
+import AppRouter from '../AppRouter'; // Якщо на рівень вище
+import "../index.css";
+
+const App: React.FC = () => {
+  return <AppRouter />;
+};
+
+export default App;

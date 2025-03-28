@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SoundScape - @ViewData["Title"]</title>
+    @RenderSection("Styles", required: false)
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="icon" type="image/x-icon" href="~/images/logo.ico" />
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div>
+                <a asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo.png" alt="logo" />
+                </a>
+                <button type="button" class="btn1 btn-primary" id="home">
+                    <img src="/images/icons_main-content/icon_home.svg" />
+                </button>
+            </div>
+            <div class="serchContainer">
+                <input type="text" id="mainSearch" name="mainSearch" class="form-control" placeholder="Пошук"/>
+            </div>
+            <div>
+                <button type="button" class="btn btn-container" id="premium">
+                    <p>Premium</p>
+                </button>
+                <button type="button" class="btn2 btn-primary" id="messages">
+                    <img src="/images/icons_main-content/icon_messages.svg" />
+                </button>
+                <button type="button" class="btn btn-primary" id="profile">
+                    <img src="/images/ava_example.svg" />
+                </button>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer>
+        <div class="container">
+            <ul>
+                <a asp-controller="#" asp-action="#">
+                <li>Компанія</li>
+                </a>
+                <a asp-controller="#" asp-action="#">
+                <li>Про нас</li>
+                </a>
+                <a asp-controller="#" asp-action="#">
+                <li>Вакансії</li>
+                </a>
+            </ul>
+            <ul>
+                <a asp-controller="#" asp-action="#">
+                <li>Спільноти</li>
+                </a>
+                <a asp-controller="#" asp-action="#">
+                <li>Для виконавців</li>
+                </a>
+                <a asp-controller="#" asp-action="#">
+                <li>Для розробників</li>
+                </a>
+                <a asp-controller="#" asp-action="#">
+                <li>Для інвесторів</li>
+                </a>
+                <a asp-controller="#" asp-action="#">
+                <li>Для рекламодавців</li>
+                </a>
+            </ul>
+            <ul>
+                <a asp-controller="#" asp-action="#">
+                <li>Корисні посилання</li>
+                </a>
+                <a asp-controller="#" asp-action="#">
+                <li>Підтримка</li>
+                </a>
+                <a asp-controller="#" asp-action="#">
+                <li>Мобільний додаток</li>
+                </a>
+            </ul>
+            <ul>
+                <a asp-controller="#" asp-action="#">
+                <li>Підписки</li>
+                </a>
+                <a asp-controller="#" asp-action="#">
+                <li>Premium Individual</li>
+                </a>
+                <a asp-controller="#" asp-action="#">
+                <li>Premium Duo</li>
+                </a>
+                <a asp-controller="#" asp-action="#">
+                <li>Premium Family</li>
+                </a>
+                <a asp-controller="#" asp-action="#">
+                <li>Premium Student</li>
+                </a>
+            </ul>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

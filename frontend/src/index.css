@@ -1,0 +1,1057 @@
+/* Глобальні скидання стилів */
+* {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+*, :after, :before {
+  box-sizing: inherit;
+}
+
+:active, :focus {
+  outline: none;
+}
+
+a:active, a:focus {
+  outline: none;
+}
+
+aside, footer, header, nav {
+  display: block;
+}
+
+body, html {
+  height: 100%;
+  width: 100%;
+  font-size: 14px;
+  line-height: 1.5;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  font-family: 'Noto Sans', sans-serif;
+  background: #00010D;
+}
+
+button, input, textarea {
+  font-family: inherit;
+}
+
+input[type="text"]::-ms-clear,
+input[type="text"]::-ms-reveal,
+input::-webkit-search-cancel-button,
+input::-webkit-search-decoration,
+input::-webkit-search-results-button,
+input::-webkit-search-results-decoration {
+  display: none;
+}
+
+input::-moz-placeholder,
+input::-webkit-input-placeholder {
+  color: #B3B3B3;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* Стилі для кнопок */
+button {
+  cursor: pointer;
+  background-color: transparent; /* Прозорий фон для кнопок */
+}
+
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+
+a, a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+ul li {
+  list-style: none;
+}
+
+img {
+  vertical-align: top;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: 400;
+}
+
+/* Стилі для header */
+header {
+  margin: 20px 10px;
+  background-color: transparent; /* Прозорий фон для шапки */
+}
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-height: 50px;
+  background-color: transparent; /* Прозорий фон для навігації */
+}
+
+nav div:last-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header .btn-container {
+  display: flex;
+  width: 150px;
+  padding: 6px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #730781 0%, #A305A6 100%);
+
+  animation: fadeIn 1s ease-in-out; /* Анімація для контейнера */
+}
+
+header .btn-container:hover {
+  background: linear-gradient(180deg, #A305A6 0%, #730781 100%); /* Зміна кольору при наведенні */
+}
+
+header .btn-container p {
+  color: #FFF;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 30px;
+  transition: color 0.3s ease, transform 0.3s ease; /* Плавний перехід кольору та трансформації */
+  animation: slideUp 1s ease-out; /* Анімація для тексту */
+}
+
+header .btn-container p:hover {
+  color: #555555; /* Зміна кольору тексту при наведенні */
+  transform: scale(1.1); /* Збільшення тексту при наведенні */
+}
+
+
+
+/* Анімація для тексту */
+@keyframes slideUp {
+  from {
+    transform: translateY(10px); /* Текст починається трохи нижче */
+    opacity: 0; /* Текст починається прозорим */
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1; /* Текст з'являється */
+  }
+}
+
+
+nav .serchContainer {
+  max-width: 600px;
+  width: 100%;
+}
+
+.form-control {
+  display: flex;
+  width: 150%;
+  color: white;
+  background-color: transparent; /* Прозорий фон для поля пошуку */
+  padding: 6px 14px 6px 40px;
+  border-radius: 18px;
+  border: 1px solid #FFF;
+  color: #B3B3B3;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+.form-control::placeholder {
+  color: #B3B3B3;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+
+footer {
+  background-color: #00010d; /* Чорний фон для футера */
+  padding: 30px 0;
+  color: #ffffff;
+  text-align: center; /* Центруємо текст всередині футера */
+  animation: fadeIn 1.5s ease-in-out; /* Додаємо анімацію */
+}
+
+footer .container {
+  display: flex;
+  justify-content: center; /* Центруємо контент горизонтально */
+  align-items: center; /* Центруємо контент вертикально */
+  flex-wrap: nowrap; /* Колонки залишаються в одному рядку */
+  max-width: 1200px; /* Обмежуємо максимальну ширину */
+  margin: 0 auto; /* Центруємо контейнер */
+  gap: 30px; /* Відстань між колонками */
+}
+
+footer .column {
+  width: 23%; /* Кожна колонка займатиме 23% ширини контейнера */
+  padding: 0 15px; /* Додаємо відступи для колонок */
+  opacity: 1; /* Видимість для колонок */
+  transform: translateY(0); /* Ніякої початкової трансформації */
+  animation: fadeInUp 1s ease-in-out; /* Анімація для кожної колонки */
+}
+
+footer .column h4 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  font-weight: 700; /* Товстий шрифт для заголовків */
+  text-transform: uppercase; /* Верхній регістр для заголовків */
+  letter-spacing: 1px; /* Відстань між літерами */
+  color: #ffffff;
+}
+
+footer .column ul {
+  list-style: none;
+  padding: 0;
+}
+
+footer .column ul li {
+  margin-bottom: 10px;
+}
+
+footer .column ul li a {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration: none; /* Без підкреслення для посилань */
+  transition: color 0.3s ease, text-decoration 0.3s ease; /* Плавний перехід кольору і підкреслення */
+}
+
+footer .column ul li a:hover {
+  color: #872294; /* Колір при наведенні */
+  text-decoration: underline; /* Підкреслення при наведенні */
+}
+
+@media (max-width: 768px) {
+  footer .column {
+      width: 48%; /* Зменшуємо ширину колонок на мобільних пристроях */
+  }
+}
+
+@media (max-width: 480px) {
+  footer .column {
+      width: 100%; /* Для дуже маленьких екранів колонки будуть по ширині 100% */
+  }
+}
+
+/* Анімація появи футера */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
+
+/* Анімація для колонок */
+@keyframes fadeInUp {
+  0% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+  100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+footer .column:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+footer .column:nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+footer .column:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+footer .column:nth-child(4) {
+  animation-delay: 0.8s;
+}
+
+
+/* Стилі для бібліотеки */
+.library-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.library-item {
+  display: flex;
+  align-items: center;
+  width: 80%;
+  padding: 12px;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: transparent;
+  position: relative;
+}
+
+.library-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.library-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 12px;
+  background-color: transparent;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out;
+}
+
+.library-item img:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.2);
+  filter: brightness(1.2);
+}
+
+.library-item .item-text {
+  flex-grow: 1;
+}
+
+.library-item h3 {
+  color: #fff;
+  font-size: 16px;
+  margin: 0;
+}
+
+.library-item p {
+  color: #B3B3B3;
+  font-size: 12px;
+  margin: 0;
+}
+
+.library-item .more-options {
+  margin-left: auto;
+  color: #B3B3B3;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.library-item .icon {
+  font-size: 24px;
+  margin-right: 12px;
+  color: #B3B3B3;
+}
+
+/* Стилі для меню опцій */
+.options-menu {
+  display: none; /* Спочатку меню приховане */
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background-color: #333;
+  border-radius: 4px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.options-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+}
+
+.options-menu ul li {
+  margin: 5px 0;
+}
+
+.options-menu ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 5px;
+  display: block;
+}
+
+.options-menu ul li a:hover {
+  background-color: #780288;
+}
+
+/* Показати меню, коли воно активне */
+.options-menu.active {
+  display: block;
+}
+
+
+/* Стилі для фільтрів */
+.filters-navigation {
+  display: flex;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.tab {
+  background-color: transparent; /* Прозорий фон для вкладок */
+  border: 1px solid #fff;
+  padding: 8px 14px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.tab:hover,
+.tab.active {
+  background-color: #660273;
+}
+
+/* Стилі для пошукового рядка */
+.search-library {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 8px 36px 8px 14px;
+  border-radius: 18px;
+  border: 1px solid #fff;
+  background-color: transparent; /* Прозорий фон для пошукового рядка */
+  color: #B3B3B3;
+  font-size: 14px;
+}
+
+.search-icon {
+  position: absolute;
+  right: 16px;
+  color: #B3B3B3;
+  font-size: 18px;
+}
+
+/* Стилі для фільтрів */
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.filter {
+  background-color: transparent; /* Прозорий фон для фільтрів */
+  border: 1px solid #fff;
+  padding: 8px 18px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.filter:hover {
+  background-color: #660273;
+}
+
+.plus {
+  font-weight: bold;
+  background-color: #660273;
+  color: white;
+}
+
+.plus:hover {
+  background-color: #A305A6;
+}
+
+/* Стилі для верхньої навігаційної панелі */
+.top-navigation {
+  background-color:#2d0140;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-height: 50px;
+  width: 100%; /* Розтягуємо на всю ширину */
+  box-sizing: border-box; /* Щоб padding не впливав на розміри */
+}
+
+
+.top-navigation .logo {
+  font-size: 18px;
+  color: #ffffff; /* Текст світлого кольору */
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Відстань між іконкою і текстом */
+}
+
+.top-navigation .logo i {
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.top-navigation .favorites {
+  font-size: 14px;
+  color: #ffffff; /* Текст світлого кольору */
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Відстань між зображенням і текстом */
+}
+
+.top-navigation .favorites .favorite-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.top-navigation .favorites span {
+  font-size: 14px;
+}
+
+/* Стилі для кнопок "Усе", "Музика", "Подкасти" */
+.top-navigation .navigation-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.top-navigation .nav-button {
+  background-color: #3b014d;
+  padding: 5px 20px;
+  border-radius: 20px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.top-navigation .nav-button:hover {
+  background-color: #cf8ae4;
+}
+/* Стилі для кнопок навігації */
+.nav-button {
+  background-color: #660273; /* Фіолетовий фон */
+  color: white; /* Білий текст */
+  font-size: 12px; /* Розмір шрифту */
+  font-weight: bold; /* Жирний текст */
+  padding: 10px 20px; /* Внутрішні відступи */
+  border: none; /* Без рамки */
+  border-radius: 8px; /* Округлені кути */
+  cursor: pointer; /* Вказівник при наведенні */
+  transition: background-color 0.3s, transform 0.2s; /* Плавні зміни */
+  text-decoration: none; /* Прибирає підкреслення */
+  display: inline-block; /* Щоб розмір відповідав контенту */
+}
+
+/* Ефект при наведенні */
+.nav-button:hover {
+  background-color: #A305A6; /* Яскравіший фіолетовий */
+  transform: scale(1.05); /* Легке збільшення */
+}
+
+/* Ефект при натисканні */
+.nav-button:active {
+  transform: scale(0.95); /* Легке зменшення */
+}
+
+/* Контейнер для кнопок */
+.navigation-buttons {
+  display: flex;
+  gap: 12px; /* Відстань між кнопками */
+  justify-content: center; /* Вирівнювання по центру */
+  padding: 10px 0; /* Відступи зверху і знизу */
+}
+
+
+/* Стилі для нижньої навігаційної панелі */
+.bottom-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background-color: transparent; /* Прозорий фон */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Легка тінь для підняття панелі */
+  border-radius: 12px; /* Округлені кути панелі */
+  transition: all 0.3s ease; /* Плавний перехід для всіх змін */
+}
+
+/* Контейнер для пошукового поля */
+.bottom-navigation .search-bar-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* Стилі для самого поля пошуку */
+.bottom-navigation .search-bar {
+  width: 300px;
+  padding: 8px 36px 8px 14px;
+  background-color: rgba(102, 2, 115, 0.1); /* Прозорий фіолетовий фон */
+  color: #660273; /* Колір тексту */
+  font-size: 14px;
+  border-radius: 18px; /* Округлені кути */
+  transition: background-color 0.3s; /* Плавний перехід для фону */
+}
+
+/* Стиль пошукового поля при фокусі */
+.bottom-navigation .search-bar:focus {
+  background-color: rgba(102, 2, 115, 0.2); /* Змінюється фон на більш темний фіолетовий при фокусі */
+  outline: none; /* Прибираємо стандартне виділення */
+}
+
+/* Стилі для фільтрів */
+.bottom-navigation .filters {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+/* Стилі для кожного фільтра */
+.bottom-navigation .filter {
+  background-color: transparent;
+  color: #660273; /* Колір тексту */
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 6px 12px; /* Додаткові відступи для кнопок */
+  transition: background-color 0.3s, color 0.3s, transform 0.2s; /* Плавні зміни кольору та анімація */
+}
+
+/* Стиль фільтра при наведенні */
+.bottom-navigation .filter:hover {
+  background-color: #660273; /* Фон стає фіолетовим */
+  color: white; /* Текст стає білим */
+  transform: scale(1.1); /* Легке збільшення фільтра */
+}
+
+/* Кнопка для додавання */
+.bottom-navigation .plus {
+  font-weight: bold;
+  background-color: #660273; /* Фон кнопки */
+  color: white; /* Колір тексту */
+  padding: 10px 15px; /* Відступи для кнопки */
+  border-radius: 8px; /* Округлені кути */
+  transition: background-color 0.3s, transform 0.2s; /* Плавна зміна фону та анімація */
+}
+
+/* Стиль кнопки при наведенні */
+.bottom-navigation .plus:hover {
+  background-color: #A305A6; /* Яскравіший фіолетовий фон */
+  transform: scale(1.1); /* Легке збільшення кнопки */
+}
+
+/* Стилі для кнопки додавання при натисканні */
+.bottom-navigation .plus:active {
+  transform: scale(0.98); /* Легке зменшення кнопки при натисканні */
+}
+/* Стилі для нижньої навігаційної панелі */
+.bottom-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background-color: transparent; /* Прозорий фон */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Легка тінь для підняття панелі */
+  border-radius: 12px; /* Округлені кути панелі */
+  transition: all 0.3s ease; /* Плавний перехід для всіх змін */
+}
+
+/* Контейнер для пошукового поля */
+.bottom-navigation .search-bar-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* Стилі для самого поля пошуку */
+.bottom-navigation .search-bar {
+  width: 300px;
+  padding: 8px 36px 8px 14px;
+  background-color: rgba(102, 2, 115, 0.1); /* Прозорий фіолетовий фон */
+  color: #ffffff; /* Колір тексту */
+  font-size: 14px;
+  border-radius: 18px; /* Округлені кути */
+  transition: background-color 0.3s; /* Плавний перехід для фону */
+}
+
+/* Стиль пошукового поля при фокусі */
+.bottom-navigation .search-bar:focus {
+  background-color: rgba(102, 2, 115, 0.2); /* Змінюється фон на більш темний фіолетовий при фокусі */
+  outline: none; /* Прибираємо стандартне виділення */
+}
+
+/* Стилі для фільтрів */
+.bottom-navigation .filters {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+/* Стилі для кожного фільтра */
+.bottom-navigation .filter {
+  background-color: #660273; /* Фіолетовий фон */
+  color: white; /* Білий текст */
+  font-size: 12px; /* Менший розмір тексту */
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 4px 10px; /* Зменшені відступи для кнопок */
+  border: none; /* Прибираємо рамку */
+  transition: background-color 0.3s, color 0.3s, transform 0.2s; /* Плавні зміни кольору та анімація */
+}
+
+/* Стиль фільтра при наведенні */
+.bottom-navigation .filter:hover {
+  background-color: #A305A6; /* Яскравіший фіолетовий фон */
+  color: white; /* Текст залишається білим */
+  transform: scale(1.1); /* Легке збільшення фільтра */
+}
+
+/* Кнопка для додавання */
+.bottom-navigation .plus {
+  font-weight: bold;
+  background-color: #660273; /* Фіолетовий фон */
+  color: white; /* Білий текст */
+  padding: 6px 10px; /* Менші відступи для кнопки */
+  border-radius: 8px; /* Округлені кути */
+  border: none; /* Прибираємо рамку */
+  transition: background-color 0.3s, transform 0.2s; /* Плавна зміна фону та анімація */
+}
+
+/* Стиль кнопки при наведенні */
+.bottom-navigation .plus:hover {
+  background-color: #A305A6; /* Яскравіший фіолетовий фон */
+  transform: scale(1.1); /* Легке збільшення кнопки */
+}
+
+/* Стилі для кнопки додавання при натисканні */
+.bottom-navigation .plus:active {
+  transform: scale(0.98); /* Легке зменшення кнопки при натисканні */
+}
+
+
+
+
+/* Стилі для головної панелі */
+.main-panel {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.main-panel .category {
+  flex: 1;
+  padding: 16px;
+  background-color: transparent;
+  border-radius: 8px;
+  border: 1px solid #fff;
+}
+
+.main-panel .category h2 {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.main-panel .category .category-items {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.main-panel .category .category-item {
+  flex: 0 1 calc(33.33% - 16px);
+  background-color: #660273;
+  border-radius: 8px;
+  padding: 12px;
+  transition: transform 0.3s ease;
+}
+
+.main-panel .category .category-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.main-panel .category .category-item:hover {
+  transform: translateY(-5px);
+}
+.favorite-button {
+  display: flex;
+  align-items: center; /* Центрує вміст по вертикалі */
+  justify-content: center; /* Центрує вміст по горизонталі (якщо потрібно) */
+}
+
+.favorite-button span {
+  color: #ffffff;
+  font-size: 16px;
+  transition: color 0.3s ease, font-size 0.3s ease;
+}
+
+.favorite-button:hover span {
+  color: #686969;
+  font-size: 18px;
+}
+/* Загальний стиль для кнопок */
+.btn, .btn2 {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.btn:hover, .btn2:hover {
+  transform: scale(1.1); /* Збільшення кнопки при наведенні */
+  opacity: 0.8; /* Легке затемнення */
+}
+
+/* Додаткові стилі для анімації на кожну кнопку */
+#premium:hover {
+  background-color: #f0a500; /* Зміна кольору фону для Premium */
+}
+
+#messages:hover {
+  background-color: transparent;  /* Зміна кольору фону для повідомлень */
+}
+
+#profile:hover {
+  background-color: transparent;  /* Зміна кольору фону для профілю */
+}
+
+
+
+
+/* Збільшення логотипу при наведенні */
+.logo:hover img {
+  transform: scale(1.1); /* Збільшення логотипу */
+}
+
+/* Стилі для кнопки */
+.btn1 {
+  background-color: transparent; /* Прозорий фон */
+  border: 2px solid transparent; /* Прозора рамка */
+  transition: transform 0.3s ease, opacity 0.3s ease, border-color 0.3s ease; /* Анімація */
+}
+
+.btn1:hover {
+  transform: scale(1.1); /* Збільшення кнопки */
+  opacity: 0.8; /* Легке затемнення */
+  background-color: transparent; /* Колір рамки при наведенні */
+}
+
+
+
+/* Збільшення іконки при наведенні */
+.btn1:hover img {
+  transform: scale(1.2); /* Збільшення іконки */
+}
+.library-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  padding: 15px;
+  margin: 10px 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.library-item:focus {
+  outline: none;
+}
+
+.item-img {
+  max-width: 50px;
+  max-height: 50px;
+  margin-right: 10px;
+}
+
+.item-text h3 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.item-text p {
+  font-size: 14px;
+  margin: 0;
+  color: #666;
+}
+
+.more-options {
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.more-options:hover {
+  color: #007bff;
+}
+
+.options-menu {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.options-menu.active {
+  display: block;
+  opacity: 1;
+}
+
+.options-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.options-menu li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.options-menu li:last-child {
+  border-bottom: none;
+}
+
+.options-menu a {
+  text-decoration: none;
+  color: #333;
+}
+
+.options-menu .close-menu {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  font-size: 18px;
+  cursor: pointer;
+  color: #333;
+  background-color: transparent;
+  border: none;
+}
+.library-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  padding: 15px;
+  margin: 10px 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.library-item:focus {
+  outline: none;
+}
+
+.item-img {
+  max-width: 50px;
+  max-height: 50px;
+  margin-right: 10px;
+}
+
+.item-text h3 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.item-text p {
+  font-size: 14px;
+  margin: 0;
+  color: #666;
+}
+
+.more-options {
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.more-options:hover {
+  color: #007bff;
+}
+
+.options-menu {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #660273;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.options-menu.active {
+  display: block;
+  opacity: 1;
+}
+
+.options-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.options-menu li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  color: #ffffff; /* Змінено колір тексту на білий */
+}
+
+.options-menu li:last-child {
+  border-bottom: none;
+}
+
+.options-menu a {
+  text-decoration: none;
+  color: #ffffff; /* Змінено колір тексту на білий */
+}
+
+.options-menu .close-menu {
+  position: absolute;
+  top: -10px;
+  right: 0px;
+  font-size: 30px; /* Збільшили розмір хрестика */
+  cursor: pointer;
+  color: #ffffff; /* Колір хрестика */
+  background-color: transparent;
+  border: none;
+  transition: transform 0.3s ease;
+}
+
+.options-menu .close-menu:hover {
+  transform: scale(1.3); /* Збільшення хрестика при наведенні */
+}
+
+

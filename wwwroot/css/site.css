@@ -1,0 +1,209 @@
+﻿* {
+  padding: 0;
+  margin: 0;
+  border: 0
+}
+
+*, :after, :before {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box
+}
+
+:active, :focus {
+  outline: none
+}
+
+a:active, a:focus {
+  outline: none
+}
+
+aside, footer, header, nav {
+  display: block
+}
+
+body, html {
+  height: 100%;
+  width: 100%;
+  font-size: 100%;
+  line-height: 1;
+  font-size: 14px;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%
+}
+
+button, input, textarea {
+  font-family: inherit
+}
+
+  input[type=text]::-ms-clear {
+      display: none;
+      width: 0;
+      height: 0
+  }
+
+  input[type=text]::-ms-reveal {
+      display: none;
+      width: 0;
+      height: 0
+  }
+
+  input::-webkit-search-cancel-button, input::-webkit-search-decoration, input::-webkit-search-results-button, input::-webkit-search-results-decoration {
+      display: none
+  }
+
+  input::-moz-placeholder {
+      color: #000;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 400
+  }
+
+  input::-webkit-input-placeholder {
+      color: #000;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 400
+  }
+
+button {
+  cursor: pointer
+}
+
+  button::-moz-focus-inner {
+      padding: 0;
+      border: 0
+  }
+
+a, a:visited {
+  text-decoration: none
+}
+
+  a:hover {
+      text-decoration: none
+  }
+
+ul li {
+  list-style: none
+}
+
+img {
+  vertical-align: top
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: 400
+}
+/* null style end */
+
+/*header*/
+body {
+  background: #00010D;
+}
+
+header {
+  margin: 40px 16px;
+}
+
+.container{
+  width: 100%;
+  max-width: 1618px;
+  margin: 0px auto;
+}
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Выравниваем элементы по центру */
+  flex-wrap: nowrap; /* Запрещаем перенос элементов */
+  max-height: 54px;
+}
+  nav div:last-child {
+      display: flex;
+      align-items: center;
+      gap: 10px; /* Добавляет небольшой отступ между кнопками */
+      flex-wrap: nowrap; /* Запрещаем перенос элементов */
+  }
+
+header .btn1{
+  height: 100%;
+  margin-left:24px;
+}
+header .btn2 {
+  padding: 10px 0;
+  margin: 0px 24px 0 44px;
+}
+header .btn-container {
+  display: flex;
+  width: 169px;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 20px;
+  background: var(--Gradient-2, linear-gradient(180deg, #660273 0%, #A305A6 100%));
+}
+.btn-container p {
+  color: #FFF;
+  font-family: "Noto Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 35px; /* 218.75% */
+}
+.btn-primary{
+  background-color: transparent;
+  background-border: transparent;
+}
+nav .serchContainer{
+  max-width:700px;
+  width: 100%;
+}
+.form-control {
+  display: flex;
+  width: 100%;
+  color: white;
+  background-color: transparent;
+  background: url("/images/icons_main-content/icon_search.svg") no-repeat 10px;
+  padding: 8px 16px 8px 40px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 20px;
+  border: 1px solid var(--Text, #FFF);
+  color: var(--Gray, #B3B3B3);
+  font-family: "Noto Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 35px; /* 218.75% */
+}
+  .form-control::placeholder {
+      color: var(--Gray, #B3B3B3);
+      font-family: "Noto Sans";
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 35px; /* 218.75% */
+  }
+
+/*footer*/
+
+footer .container{
+  display:flex;
+  max-width: 1318px;
+  justify-content:space-between;
+}
+
+footer ul a{
+  color: #FFF;
+  font-family: "Noto Sans";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+footer ul a:first-child{
+  font-weight: 700;
+}
