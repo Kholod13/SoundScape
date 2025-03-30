@@ -82,10 +82,13 @@ builder.Services.AddAuthorization(options =>
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
+
 {
     var services = scope.ServiceProvider;
+    var dbContext = services.GetRequiredService<ApplicationDbContext>();
     try
     {
+        dbContext.Database.Migrate();
         Seeder.SeedArtists(services);
         Seeder.SeedAlbumsForAllArtists(services);
         Seeder.SeedTrack(services);
@@ -126,7 +129,7 @@ app.MapControllerRoute(
 
 app.Run();
 
-/*
+
 void SeedAdminUser(ApplicationDbContext _dbContext)
 {
     if (!_dbContext.Users.Any(u => u.Email == "admin@gmail.com"))
@@ -142,4 +145,4 @@ void SeedAdminUser(ApplicationDbContext _dbContext)
         _dbContext.Users.Add(adminUser);
         _dbContext.SaveChanges();
     }
-}*/
+}

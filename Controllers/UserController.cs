@@ -188,6 +188,19 @@ namespace SoundScape.Controllers
             return Ok(new { message = "User created successfully", user });
         }
 
+        [HttpDelete("delete-user/{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _dbContext.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound("Користувача не знайдено.");
+            }
 
+            _dbContext.Users.Remove(user);
+            await _dbContext.SaveChangesAsync();
+
+            return Ok("Користувача успішно видалено.");
+        }
     }
 }
